@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">mStorage</string>
+    <string name="welcome">Welcome to mStorage</string>
+    <string name="logo_description">Application Logo</string>
 </resources>
