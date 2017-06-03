@@ -28,7 +28,7 @@ import java.util.ArrayList;
 
 public class ImportData extends AppCompatActivity {
 
-    //Bunch of attributes we're gonna need
+    //Bunch of attributes we're gonna need .
     private static final String JSON_OBJECT_REQUEST_URL = "http://192.168.1.3:4567/storages"; //Everyone change this ip address to the corresponding ip address of your emulator
     ProgressDialog progressDialog;
     private static final String TAG = "ImportData";

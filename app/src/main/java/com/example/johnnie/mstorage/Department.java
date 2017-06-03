@@ -3,10 +3,12 @@ package com.example.johnnie.mstorage;
 import java.io.Serializable;
 
 /**
- * Created by Johnnie on 19/5/2017.
+ * Created by Masterace on 28/5/2017.
  */
 
-public class Department implements Serializable {
+//Simple class for Department. Not much to explain here.
+
+public class Department implements Serializable{
 
     private int id;
     private int storageid;
