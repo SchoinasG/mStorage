@@ -106,6 +106,8 @@ public class ImportData extends AppCompatActivity {
                         } else { //If storage contains departments go to departments selection intent
                             i = new Intent(getApplicationContext(), DepartmentsSelection.class); //Initiate intent object
                             i.putExtra("Departments", StorageClicked.getStorageDepartments()); //Pass Departments Array of selected Storage to next activity
+                            i.putExtra("Storage", StorageClicked.getId());
+                            i.putExtra("storage_name", StorageClicked.getName());
                             startActivity(i); //Start the new activity
                         }
                     }

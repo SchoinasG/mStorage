@@ -15,8 +15,12 @@ public class DepartmentsSelection extends AppCompatActivity {
 
     private ListView DepartmentsListView;
     private ListAdapter DepartmentsList;
+    private int Selected_Storage_ID;
+    private String Selected_Storage_Name;
 
     private ArrayList<Department> StorageDepartments;
+
+    private DBHandler dbHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,11 +34,17 @@ public class DepartmentsSelection extends AppCompatActivity {
         //Get Departments data from extra
         Bundle getTheID = getIntent().getExtras();
         StorageDepartments = (ArrayList<Department>) getTheID.getSerializable("Departments");
+        Selected_Storage_ID = getTheID.getInt("storage_id");
+        Selected_Storage_Name = getTheID.getString("storage_name");
 
         //Get reference from listview
         DepartmentsListView = (ListView) findViewById(R.id.departmentsList);
 
+        dbHandler = new DBHandler(this);
+
         populateDepartmentList(StorageDepartments);
+
+        printDatabase();
     }
 
     public void populateDepartmentList(ArrayList<Department> List) {
@@ -57,19 +67,31 @@ public class DepartmentsSelection extends AppCompatActivity {
         StringBuffer responseText = new StringBuffer();
         responseText.append("The following were selected...\n");
 
+        Storage storage = new Storage(Selected_Storage_ID, Selected_Storage_Name, null);
+        dbHandler.addStorage(storage);
+
         for(int i=0; i<StorageDepartments.size(); i++){
             Department depp = StorageDepartments.get(i);
 
             if(depp.isSelected()){
                 responseText.append("\n" + depp.getName());
+
+
             }
         }
 
-        Toast.makeText(getApplicationContext(), responseText, Toast.LENGTH_LONG).show();
+        //Toast.makeText(getApplicationContext(), responseText, Toast.LENGTH_LONG).show();
+
+        printDatabase();
     }
 
 
     public void CheckAll(View view){
         //Nothing yet
+    }
+
+    public void printDatabase(){
+        String dbString = dbHandler.databaseToString();
+        Toast.makeText(getApplicationContext(), dbString, Toast.LENGTH_LONG).show();
     }
 }
