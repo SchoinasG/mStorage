@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 /**
  * Created by Masterace on 5/6/2017.
@@ -14,6 +15,7 @@ public class DBHandler extends SQLiteOpenHelper {
 
     private static final int DATABASE_VERSION = 1;
     private static final String DATABASE_NAME = "mStorage.db";
+    private String TAG = "DbHelper";
 
     public DBHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -24,8 +26,8 @@ public class DBHandler extends SQLiteOpenHelper {
 
         final String SQL_CREATE_STORAGE_TABLE = "CREATE TABLE "+ DBContract.StorageEntry.TABLE_NAME + " (" +
                 DBContract.StorageEntry.COLUMN_STORAGE_ID + " INTEGER PRIMARY KEY, " +
-                DBContract.StorageEntry.COLUMN_STORAGE_NAME+" TEXT NOT NULL"+
-                " );";
+                DBContract.StorageEntry.COLUMN_STORAGE_NAME+" TEXT,"+
+                " UNIQUE (" + DBContract.StorageEntry.COLUMN_STORAGE_ID + ") ON CONFLICT REPLACE);";
 
         final String SQL_CREATE_DEPARTMENT_TABLE = "CREATE TABLE "+ DBContract.DepartmentEntry.TABLE_NAME + " (" +
                 DBContract.DepartmentEntry.COLUMN_DEPARTMENT_ID + " INTEGER PRIMARY KEY, " +
@@ -64,20 +66,30 @@ public class DBHandler extends SQLiteOpenHelper {
     }
 
     public String databaseToString(){
+        Log.d(TAG, "getTableAsString called:");
         String dbString = "";
         SQLiteDatabase db = getWritableDatabase();
-        String query = "SELECT * FROM " + DBContract.StorageEntry.TABLE_NAME + " WHERE 1";
+        String query = "SELECT * FROM " + DBContract.StorageEntry.TABLE_NAME;
 
         //Cursor point to a location in the results
         Cursor c = db.rawQuery(query, null);
         c.moveToFirst();
 
-        while(!c.isAfterLast()){
+        String[] columnNames = c.getColumnNames();
+        do{
+            for(String name: columnNames){
+                dbString += String.format("%s: %s\n", name, c.getString(c.getColumnIndex(name)));
+            }
+            dbString += "\n";
+        }while(c.moveToNext());
+
+        /*while(!c.isAfterLast()){
+
             if(c.getString(c.getColumnIndex("stor_name"))!=null){
                 dbString += c.getString(c.getColumnIndex("stor_name"));
                 dbString += "\n";
             }
-        }
+        }*/
 
         db.close();
 

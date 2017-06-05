@@ -34,8 +34,8 @@ public class DepartmentsSelection extends AppCompatActivity {
         //Get Departments data from extra
         Bundle getTheID = getIntent().getExtras();
         StorageDepartments = (ArrayList<Department>) getTheID.getSerializable("Departments");
-        Selected_Storage_ID = getTheID.getInt("storage_id");
-        Selected_Storage_Name = getTheID.getString("storage_name");
+        Selected_Storage_ID = getTheID.getInt("Storage_ID");
+        Selected_Storage_Name = getTheID.getString("Storage_Name");
 
         //Get reference from listview
         DepartmentsListView = (ListView) findViewById(R.id.departmentsList);
@@ -67,8 +67,9 @@ public class DepartmentsSelection extends AppCompatActivity {
         StringBuffer responseText = new StringBuffer();
         responseText.append("The following were selected...\n");
 
-        Storage storage = new Storage(Selected_Storage_ID, Selected_Storage_Name, null);
+        Storage storage = new Storage(5, Selected_Storage_Name, null);
         dbHandler.addStorage(storage);
+        dbHandler.close();
 
         for(int i=0; i<StorageDepartments.size(); i++){
             Department depp = StorageDepartments.get(i);
@@ -82,7 +83,7 @@ public class DepartmentsSelection extends AppCompatActivity {
 
         //Toast.makeText(getApplicationContext(), responseText, Toast.LENGTH_LONG).show();
 
-        printDatabase();
+        //printDatabase();
     }
 
 
