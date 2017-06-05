@@ -67,7 +67,7 @@ public class DepartmentsSelection extends AppCompatActivity {
         StringBuffer responseText = new StringBuffer();
         responseText.append("The following were selected...\n");
 
-        Storage storage = new Storage(5, Selected_Storage_Name, null);
+        Storage storage = new Storage(Selected_Storage_ID, Selected_Storage_Name, null);
         dbHandler.addStorage(storage);
         dbHandler.close();
 

@@ -26,8 +26,8 @@ public class DBHandler extends SQLiteOpenHelper {
 
         final String SQL_CREATE_STORAGE_TABLE = "CREATE TABLE "+ DBContract.StorageEntry.TABLE_NAME + " (" +
                 DBContract.StorageEntry.COLUMN_STORAGE_ID + " INTEGER PRIMARY KEY, " +
-                DBContract.StorageEntry.COLUMN_STORAGE_NAME+" TEXT,"+
-                " UNIQUE (" + DBContract.StorageEntry.COLUMN_STORAGE_ID + ") ON CONFLICT REPLACE);";
+                DBContract.StorageEntry.COLUMN_STORAGE_NAME+" TEXT"+
+                " );";
 
         final String SQL_CREATE_DEPARTMENT_TABLE = "CREATE TABLE "+ DBContract.DepartmentEntry.TABLE_NAME + " (" +
                 DBContract.DepartmentEntry.COLUMN_DEPARTMENT_ID + " INTEGER PRIMARY KEY, " +
@@ -47,12 +47,26 @@ public class DBHandler extends SQLiteOpenHelper {
     }
 
     public void addStorage(Storage storage){
-        ContentValues values = new ContentValues();
-        values.put(DBContract.StorageEntry.COLUMN_STORAGE_ID, storage.getId());
-        values.put(DBContract.StorageEntry.COLUMN_STORAGE_NAME, storage.getName());
         SQLiteDatabase db = getWritableDatabase();
-        db.insert(DBContract.StorageEntry.TABLE_NAME, null, values);
-        db.close();
+
+        String query = "SELECT * FROM " + DBContract.StorageEntry.TABLE_NAME + " WHERE stor_id=" + storage.getId() + ";";
+        Cursor c = db.rawQuery(query, null);
+        if(c.getCount() <= 0){
+            ContentValues values = new ContentValues();
+            values.put(DBContract.StorageEntry.COLUMN_STORAGE_ID, storage.getId());
+            values.put(DBContract.StorageEntry.COLUMN_STORAGE_NAME, storage.getName());
+            db = getWritableDatabase();
+            db.insert(DBContract.StorageEntry.TABLE_NAME, null, values);
+            db.close();
+        } else {
+            ContentValues values = new ContentValues();
+            values.put(DBContract.StorageEntry.COLUMN_STORAGE_NAME, storage.getName());
+            db = getWritableDatabase();
+            db.update(DBContract.StorageEntry.TABLE_NAME, values, "stor_id="+storage.getId(), null);
+            db.close();
+        }
+
+
     }
 
     public void addDepartment(Department department){
