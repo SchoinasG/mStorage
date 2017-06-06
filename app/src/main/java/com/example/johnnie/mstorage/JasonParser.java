@@ -55,4 +55,34 @@ public class JasonParser {
         return StoragesArray; //After the loop has finished, return the ObjectArray which is named StoragesArray
     }
 
+    public static ArrayList<Item> parseItems(JSONObject jsonresponse) throws JSONException{
+        ArrayList<Item> ItemsList = new ArrayList<>();
+        int loops = 0;
+        JSONObject Items = jsonresponse;
+        loops = Items.getInt("numberOfResults");
+        JSONArray itemsArray = Items.getJSONArray("wrappedResponse");
+        for (int i=0; i<loops; i++){
+            JSONObject tempitem = itemsArray.getJSONObject(i);
+            int Item_ID = tempitem.getInt("id");
+            String Item_Name = tempitem.getString("name");
+            String Item_Desc = tempitem.getString("description");
+            String Item_SKU = tempitem.getString("SKU");
+            String Item_Barcode = tempitem.getString("barcode");
+            String Item_Category = tempitem.getString("category");
+            String Item_Position = tempitem.getString("position");
+            String Item_Measurement_Unit = tempitem.getString("measurementUnit");
+            int Item_Quantity = tempitem.getInt("quantity");
+            JSONObject belongs_to = tempitem.getJSONObject("placedAtDepartment");
+            int Item_department_id = belongs_to.getInt("id");
+
+
+            ItemsList.add(new Item(Item_ID, Item_Name, Item_Desc, Item_Category,
+                    Item_Position, Item_Measurement_Unit, Item_SKU, Item_Barcode,
+                    Item_Quantity, Item_department_id ));
+        }
+
+
+        return  ItemsList;
+    }
+
 }

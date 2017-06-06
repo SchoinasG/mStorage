@@ -22,6 +22,8 @@ public class DepartmentAdapter extends ArrayAdapter<Department> { //Custom adapt
     private Department department;
     private Context context;
 
+    ArrayList<Department> selectedDepartments = new ArrayList<Department>();
+
     public DepartmentAdapter(Context context, ArrayList<Department> Departments) { //Default constructor stuff
         super(context, R.layout.list_item_department, Departments);
         this.context = context;
@@ -72,6 +74,7 @@ public class DepartmentAdapter extends ArrayAdapter<Department> { //Custom adapt
         holder.departmentItemId.setText("Department Id: " + department.getId()); //Set department id
         holder.cb.setChecked(department.isSelected()); //Set checkbox boolean value from value stored in object's attribute
         holder.cb.setTag(department); //Set the object's tag to the checkbox because we are going to need it for the checkbox's click listener above
+
 
         return customView;
     }
