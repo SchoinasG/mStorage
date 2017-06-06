@@ -3,9 +3,9 @@
     <string name="welcome">Welcome to mStorage</string>
     <string name="logo_description">Application Logo</string>
     <string name="welcome_button">Continue</string>
-    <string name="import_button">Import data</string>
-    <string name="view_button">View inventory</string>
-    <string name="audit_button">Inventory audit</string>
+    <string name="import_button">Import Data</string>
+    <string name="view_button">View Inventory</string>
+    <string name="audit_button">Inventory Audit</string>
     <string name="reports_button">Reports</string>
     <string name="select_all_checkbox">Select All</string>
     <string name="wipe_data">Wipe Data</string>

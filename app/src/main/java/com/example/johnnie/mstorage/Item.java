@@ -32,34 +32,80 @@ public class Item {
         this.items_department_id = items_department_id;
     }
 
+    public void setId(int _id){
+        id = _id;
+    }
+
     public int getId(){
         return this.id;
     }
 
-    public String getName() {
+    public void setName(String _name){
+        name = _name;
+    }
+
+    public String getName(){
         return name;
+    }
+
+    public void setDescription(String _desc){
+        description = _desc;
     }
 
     public String getDescription(){
         return this.description;
     }
+
+    public void setCategory(String _category){
+        category = _category;
+    }
+
     public String getCategory(){
         return this.category;
     }
+
+    public void setPosition(String _position){
+        position = _position;
+    }
+
     public String getPosition(){
         return this.position;
     }
+
+    public void setMeasurement_unit(String _measurement_unit){
+        measurement_unit = _measurement_unit;
+    }
+
     public String getMeasurement_unit(){
         return this.measurement_unit;
     }
+
+    public void setSKU(String _SKU){
+        SKU = _SKU;
+    }
+
     public String getSKU(){
         return this.SKU;
     }
+
+    public void setBarcode(String _barcode){
+        barcode = _barcode;
+    }
+
     public String getBarcode(){
         return this.barcode;
     }
+
+    public void setQuantity(int _quantity){
+        quantity = _quantity;
+    }
+
     public int getQuantity(){
         return this.quantity;
+    }
+
+    public void setItems_department_id(int _items_department_id){
+        items_department_id = _items_department_id;
     }
 
     public int getItems_department_id() {

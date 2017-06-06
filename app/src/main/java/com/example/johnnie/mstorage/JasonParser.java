@@ -81,7 +81,6 @@ public class JasonParser {
                     Item_Quantity, Item_department_id ));
         }
 
-
         return  ItemsList;
     }
 

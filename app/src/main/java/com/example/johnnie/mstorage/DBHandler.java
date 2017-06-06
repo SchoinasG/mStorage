@@ -7,9 +7,6 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
-import android.widget.Toast;
-
-import java.util.ArrayList;
 
 /**
  * Created by Masterace on 5/6/2017.
@@ -17,7 +14,7 @@ import java.util.ArrayList;
 
 public class DBHandler extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION = 4;
+    private static final int DATABASE_VERSION = 5;
     private static final String DATABASE_NAME = "mStorage.db";
     private String TAG = "DbHelper";
 
@@ -175,9 +172,13 @@ public class DBHandler extends SQLiteOpenHelper {
     }
 
     public void wipeData(){
-        String query = "DELETE FROM " + DBContract.StorageEntry.TABLE_NAME;
+        String query[] = new String[] {"DELETE FROM " + DBContract.StorageEntry.TABLE_NAME,
+                "DELETE FROM " + DBContract.DepartmentEntry.TABLE_NAME,
+                "DELETE FROM " + DBContract.ItemEntry.TABLE_NAME};
 
-        executeQuery(query);
+        for(int i=0; i<query.length; i++){
+            executeQuery(query[i]);
+        }
     }
 
     public void executeQuery(String query){

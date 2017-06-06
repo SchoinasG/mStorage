@@ -141,7 +141,6 @@ public class DepartmentsSelection extends AppCompatActivity {
         AppSingleton.getInstance(getApplicationContext()).addToRequestQueue(jsonObjectReq, REQUEST_TAG);
     }
 
-
     public void CheckAll(View view){
         //Nothing yet
     }
