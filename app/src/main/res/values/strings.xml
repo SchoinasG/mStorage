@@ -8,5 +8,6 @@
     <string name="audit_button">Inventory audit</string>
     <string name="reports_button">Reports</string>
     <string name="select_all_checkbox">Select All</string>
+    <string name="wipe_data">Wipe Data</string>
 
 </resources>

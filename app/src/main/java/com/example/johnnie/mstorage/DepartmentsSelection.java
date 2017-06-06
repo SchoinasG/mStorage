@@ -43,8 +43,6 @@ public class DepartmentsSelection extends AppCompatActivity {
         dbHandler = new DBHandler(this);
 
         populateDepartmentList(StorageDepartments);
-
-        printDatabase();
     }
 
     public void populateDepartmentList(ArrayList<Department> List) {
@@ -76,23 +74,14 @@ public class DepartmentsSelection extends AppCompatActivity {
 
             if(depp.isSelected()){
                 responseText.append("\n" + depp.getName());
-
-
             }
         }
 
-        //Toast.makeText(getApplicationContext(), responseText, Toast.LENGTH_LONG).show();
-
-        //printDatabase();
+        Toast.makeText(getApplicationContext(), responseText, Toast.LENGTH_LONG).show();
     }
 
 
     public void CheckAll(View view){
         //Nothing yet
-    }
-
-    public void printDatabase(){
-        String dbString = dbHandler.databaseToString();
-        Toast.makeText(getApplicationContext(), dbString, Toast.LENGTH_LONG).show();
     }
 }
