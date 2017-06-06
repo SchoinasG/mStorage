@@ -66,8 +66,6 @@ public class DepartmentsSelection extends AppCompatActivity {
         progressDialog = new ProgressDialog(this);
 
         populateDepartmentList(StorageDepartments);
-
-        printDatabase();
     }
 
     public void populateDepartmentList(ArrayList<Department> List) {
@@ -80,7 +78,6 @@ public class DepartmentsSelection extends AppCompatActivity {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                         //Nothing yet
-                        Log.d("!!!","///"+position);
                     }
                 }
         );
@@ -147,10 +144,5 @@ public class DepartmentsSelection extends AppCompatActivity {
 
     public void CheckAll(View view){
         //Nothing yet
-    }
-
-    public void printDatabase(){
-        String dbString = dbHandler.databaseToString();
-        Toast.makeText(getApplicationContext(), dbString, Toast.LENGTH_LONG).show();
     }
 }

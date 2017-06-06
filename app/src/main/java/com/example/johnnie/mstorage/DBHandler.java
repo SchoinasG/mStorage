@@ -17,7 +17,7 @@ import java.util.ArrayList;
 
 public class DBHandler extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 4;
     private static final String DATABASE_NAME = "mStorage.db";
     private String TAG = "DbHelper";
 
@@ -68,7 +68,7 @@ public class DBHandler extends SQLiteOpenHelper {
     public void addStorage(Storage storage){
         SQLiteDatabase db = getWritableDatabase();
 
-        String query = "SELECT * FROM " + DBContract.StorageEntry.TABLE_NAME + " WHERE stor_id=" + storage.getId() + ";";
+        String query = "SELECT * FROM " + DBContract.StorageEntry.TABLE_NAME + " WHERE " + DBContract.StorageEntry.COLUMN_STORAGE_ID + "=" + storage.getId() + ";";
         Cursor c = db.rawQuery(query, null);
         if(c.getCount() <= 0){
             ContentValues values = new ContentValues();
@@ -81,11 +81,11 @@ public class DBHandler extends SQLiteOpenHelper {
             ContentValues values = new ContentValues();
             values.put(DBContract.StorageEntry.COLUMN_STORAGE_NAME, storage.getName());
             db = getWritableDatabase();
-            db.update(DBContract.StorageEntry.TABLE_NAME, values, "stor_id="+storage.getId(), null);
+            db.update(DBContract.StorageEntry.TABLE_NAME, values, DBContract.StorageEntry.COLUMN_STORAGE_ID + "=" + storage.getId(), null);
+            //Or it could be like this db.replace(DBContract.StorageEntry.TABLE_NAME, null, values);
             db.close();
         }
-
-
+        c.close();
     }
 
     public void addDepartment(Department department){
@@ -174,27 +174,24 @@ public class DBHandler extends SQLiteOpenHelper {
 
     }
 
-    public String databaseToString(){
-        Log.d(TAG, "getTableAsString called:");
-        String dbString = "";
-        SQLiteDatabase db = getWritableDatabase();
-        String query = "SELECT * FROM " + DBContract.StorageEntry.TABLE_NAME;
+    public void wipeData(){
+        String query = "DELETE FROM " + DBContract.StorageEntry.TABLE_NAME;
 
-        //Cursor point to a location in the results
-        Cursor c = db.rawQuery(query, null);
-        c.moveToFirst();
-
-        String[] columnNames = c.getColumnNames();
-        do{
-            for(String name: columnNames){
-                dbString += String.format("%s: %s\n", name, c.getString(c.getColumnIndex(name)));
-            }
-            dbString += "\n";
-        }while(c.moveToNext());
-
-
-        db.close();
-
-        return dbString;
+        executeQuery(query);
     }
+
+    public void executeQuery(String query){
+        SQLiteDatabase db = getWritableDatabase();
+
+        db.execSQL(query);
+    }
+
+    public Cursor selectQuery(String query){
+        SQLiteDatabase db = getWritableDatabase();
+
+        Cursor c = db.rawQuery(query, null);
+
+        return c;
+    }
+
 }
