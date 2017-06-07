@@ -26,6 +26,7 @@
         <activity android:name=".DepartmentsSelection" />
         <activity android:name=".DepartmentsSelectionInventory" />
         <activity android:name=".ItemsInventory"></activity>
+        <activity android:name=".DepartmentAudit"></activity>
     </application>
 
 </manifest>

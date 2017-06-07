@@ -14,7 +14,7 @@ import android.util.Log;
 
 public class DBHandler extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION = 5;
+    private static final int DATABASE_VERSION = 6;
     private static final String DATABASE_NAME = "mStorage.db";
     private String TAG = "DbHelper";
 
@@ -37,7 +37,7 @@ public class DBHandler extends SQLiteOpenHelper {
                 " );";
 
         final String SQL_CREATE_ITEM_TABLE = "CREATE TABLE "+ DBContract.ItemEntry.TABLE_NAME + " (" +
-                DBContract.ItemEntry.COLUMN_ITEM_ID + " INTEGER PRIMARY KEY, " +
+                DBContract.ItemEntry.COLUMN_ITEM_ID + " INTEGER NOT NULL, " +
                 DBContract.ItemEntry.COLUMN_ITEM_NAME + " TEXT NOT NULL, " +
                 DBContract.ItemEntry.COLUMN_ITEM_DESCRIPTION + " TEXT NOT NULL, " +
                 DBContract.ItemEntry.COLUMN_ITEM_CATEGORY + " TEXT NOT NULL, " +
@@ -46,8 +46,10 @@ public class DBHandler extends SQLiteOpenHelper {
                 DBContract.ItemEntry.COLUMN_ITEM_QUANTITY + " INTEGER NOT NULL, " +
                 DBContract.ItemEntry.COLUMN_ITEM_BARCODE + " TEXT NOT NULL, " +
                 DBContract.ItemEntry.COLUMN_ITEM_SKU + " TEXT NOT NULL, " +
-                DBContract.ItemEntry.COLUMN_ITEMS_DEPARTMENT_ID + " INTEGER NOT NULL"+
-                " )";
+                DBContract.ItemEntry.COLUMN_ITEMS_DEPARTMENT_ID + " INTEGER NOT NULL,"+
+                " PRIMARY KEY ("+DBContract.ItemEntry.COLUMN_ITEM_ID+", "+
+                DBContract.ItemEntry.COLUMN_ITEMS_DEPARTMENT_ID+", "+
+                DBContract.ItemEntry.COLUMN_ITEM_POSITION+") )";
 
         db.execSQL(SQL_CREATE_STORAGE_TABLE);
         db.execSQL(SQL_CREATE_DEPARTMENT_TABLE);
@@ -168,9 +170,9 @@ public class DBHandler extends SQLiteOpenHelper {
     }
 
     public void wipeData(){
-        String query[] = new String[] {"DELETE FROM " + DBContract.StorageEntry.TABLE_NAME,
-                "DELETE FROM " + DBContract.DepartmentEntry.TABLE_NAME,
-                "DELETE FROM " + DBContract.ItemEntry.TABLE_NAME};
+        String query[] = new String[] {"DELETE " + DBContract.StorageEntry.TABLE_NAME,
+                "DELETE TABLE " + DBContract.DepartmentEntry.TABLE_NAME,
+                "DELETE TABLE " + DBContract.ItemEntry.TABLE_NAME};
 
         for(int i=0; i<query.length; i++){
             executeQuery(query[i]);
