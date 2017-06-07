@@ -1,9 +1,12 @@
 package com.example.johnnie.mstorage;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -13,6 +16,7 @@ public class DepartmentsSelectionInventory extends AppCompatActivity {
     private ListView DepartmentsListView;
     private DBHandler dbHandler;
     private int Selected_Storage_ID;
+    private Intent i;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +64,20 @@ public class DepartmentsSelectionInventory extends AppCompatActivity {
 
         DepartmentAdapterForInventory departmentsAdapter = new DepartmentAdapterForInventory(DepartmentsSelectionInventory.this, DepartmentsList);
         DepartmentsListView.setAdapter(departmentsAdapter);
+
+        DepartmentsListView.setOnItemClickListener( //Item listener for our listview
+                new AdapterView.OnItemClickListener(){
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) { //on item clicked
+
+                        Department DepartmentClicked = (Department) parent.getItemAtPosition(position); //get the department object that the user clicked on and store it in a local object of type Department to manipulate it as we want
+
+                        i = new Intent(getApplicationContext(), ItemsInventory.class); //Initiate intent object
+                        i.putExtra("Department_ID", DepartmentClicked.getId());
+                        startActivity(i); //Start the new activity
+                    }
+                }
+        );
 
     }
 }

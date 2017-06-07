@@ -41,7 +41,7 @@ public class ViewData extends AppCompatActivity {
         ArrayList<Storage> StoragesList = new ArrayList<>();
         StoragesList.clear();
 
-        String query = "SELECT * FROM " + DBContract.StorageEntry.TABLE_NAME + " ";
+        String query = "SELECT * FROM " + DBContract.StorageEntry.TABLE_NAME;
         Cursor c = dbHandler.selectQuery(query);
 
         if(c != null && c.getCount() != 0){

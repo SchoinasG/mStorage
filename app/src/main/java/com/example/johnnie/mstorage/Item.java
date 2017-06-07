@@ -16,9 +16,8 @@ public class Item {
     private int quantity;
     private int items_department_id;
 
-    public Item(int id, String name, String description, String category,
-                String position, String measurement_unit, String SKU,
-                String barcode, int quantity, int items_department_id )
+    public Item(int id, String name, String description, String category, String position, String measurement_unit,
+                String SKU, String barcode, int quantity, int items_department_id )
     {
         this.id = id;
         this.name = name;
