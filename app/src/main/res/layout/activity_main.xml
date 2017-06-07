@@ -20,9 +20,11 @@
         android:layout_marginTop="16dp"
         app:layout_constraintHorizontal_bias="0.0"
         />
+
     <TextView
-        android:layout_width="351dp"
-        android:layout_height="38dp"
+        android:textColor="#00334d"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_above="@id/imageView"
         android:layout_marginRight="8dp"
         android:text="@string/welcome"
