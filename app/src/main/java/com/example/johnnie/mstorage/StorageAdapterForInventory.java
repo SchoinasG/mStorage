@@ -15,8 +15,8 @@ import java.util.ArrayList;
 
 public class StorageAdapterForInventory extends BaseAdapter {
 
-    Context context;
-    ArrayList<Storage> storagesList;
+    private Context context;
+    private ArrayList<Storage> storagesList;
 
     public StorageAdapterForInventory(Context context, ArrayList<Storage> list){
         this.context = context;
