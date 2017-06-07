@@ -104,6 +104,8 @@ public class DepartmentsSelection extends AppCompatActivity {
             }
         }
 
+        Toast.makeText(getApplicationContext(), responseText, Toast.LENGTH_LONG).show();
+
     }
 
     public void volleyJsonObjectRequest(String url){

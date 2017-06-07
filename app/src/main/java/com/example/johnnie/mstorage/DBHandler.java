@@ -89,7 +89,7 @@ public class DBHandler extends SQLiteOpenHelper {
         Log.d(TAG," inside addDepartment");
         SQLiteDatabase db = getWritableDatabase();
 
-        String query = "SELECT * FROM " + DBContract.DepartmentEntry.TABLE_NAME + " WHERE dep_id=" + department.getId() + ";";
+        String query = "SELECT * FROM " + DBContract.DepartmentEntry.TABLE_NAME + " WHERE " + DBContract.DepartmentEntry.COLUMN_DEPARTMENT_ID + "=" +department.getId() + ";";
         Cursor c = db.rawQuery(query, null);
         try {
             if (c.getCount() <= 0) {
@@ -100,16 +100,13 @@ public class DBHandler extends SQLiteOpenHelper {
                 values.put(DBContract.DepartmentEntry.COLUMN_BELONGS_TO_STORAGE, department.getStorageid());
                 db = getWritableDatabase();
                 db.insertOrThrow(DBContract.DepartmentEntry.TABLE_NAME, null, values);
-//                db.close();
             } else {
                 Log.d(TAG, " update Existing Department");
                 ContentValues values = new ContentValues();
                 values.put(DBContract.DepartmentEntry.COLUMN_DEPARTMENT_NAME, department.getName());
                 values.put(DBContract.DepartmentEntry.COLUMN_BELONGS_TO_STORAGE, department.getStorageid());
                 db = getWritableDatabase();
-                db.insertOrThrow(DBContract.DepartmentEntry.TABLE_NAME, null, values);
-                db.update(DBContract.DepartmentEntry.TABLE_NAME, values, "dep_id="+department.getId(), null);
-//                db.close();
+                db.update(DBContract.DepartmentEntry.TABLE_NAME, values, DBContract.DepartmentEntry.COLUMN_DEPARTMENT_ID + "=" + department.getId(), null);
             }
         }
         catch (final SQLException e)   {
@@ -125,7 +122,7 @@ public class DBHandler extends SQLiteOpenHelper {
         Log.d(TAG," inside addItems");
         SQLiteDatabase db = getWritableDatabase();
 
-        String query = "SELECT * FROM " + DBContract.ItemEntry.TABLE_NAME + " WHERE item_id=" + ItemtoDB.getId() + ";";
+        String query = "SELECT * FROM " + DBContract.ItemEntry.TABLE_NAME + " WHERE " + DBContract.ItemEntry.COLUMN_ITEM_ID + "=" + ItemtoDB.getId() + ";";
         Cursor c = db.rawQuery(query, null);
         try {
             if (c.getCount() <= 0) {
@@ -143,7 +140,6 @@ public class DBHandler extends SQLiteOpenHelper {
                 values.put(DBContract.ItemEntry.COLUMN_ITEMS_DEPARTMENT_ID, ItemtoDB.getItems_department_id());
                 db = getWritableDatabase();
                 db.insertOrThrow(DBContract.ItemEntry.TABLE_NAME, null, values);
-//                db.close();
             } else {
                 Log.d(TAG, " update Existing Item");
                 ContentValues values = new ContentValues();
@@ -157,8 +153,7 @@ public class DBHandler extends SQLiteOpenHelper {
                 values.put(DBContract.ItemEntry.COLUMN_ITEM_QUANTITY, ItemtoDB.getQuantity());
                 values.put(DBContract.ItemEntry.COLUMN_ITEMS_DEPARTMENT_ID, ItemtoDB.getItems_department_id());
                 db = getWritableDatabase();
-                db.update(DBContract.ItemEntry.TABLE_NAME, values, "item_id="+ItemtoDB.getId(), null);
-//                db.close();
+                db.update(DBContract.ItemEntry.TABLE_NAME, values, DBContract.ItemEntry.COLUMN_ITEM_ID + "=" + ItemtoDB.getId(), null);
             }
         }
         catch (final SQLException e)   {
@@ -168,7 +163,6 @@ public class DBHandler extends SQLiteOpenHelper {
             db.close();
         }
         c.close();
-
     }
 
     public void wipeData(){
