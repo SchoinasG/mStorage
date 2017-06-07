@@ -36,12 +36,10 @@
         android:layout_weight=".1">
 
         <Button
+            style="@style/customButton"
+            android:background="@drawable/custom_button"
             android:text="@string/wipe_data"
-            android:background="@drawable/import_button_bg"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="wipeData"
-            />
+            android:onClick="wipeData"/>
 
     </RelativeLayout>
 
