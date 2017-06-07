@@ -122,7 +122,9 @@ public class DBHandler extends SQLiteOpenHelper {
         Log.d(TAG," inside addItems");
         SQLiteDatabase db = getWritableDatabase();
 
-        String query = "SELECT * FROM " + DBContract.ItemEntry.TABLE_NAME + " WHERE " + DBContract.ItemEntry.COLUMN_ITEM_ID + "=" + ItemtoDB.getId() + ";";
+        String query = "SELECT * FROM " + DBContract.ItemEntry.TABLE_NAME + " WHERE " + DBContract.ItemEntry.COLUMN_ITEMS_DEPARTMENT_ID + "=" + ItemtoDB.getItems_department_id()
+                + " AND " + DBContract.ItemEntry.COLUMN_ITEM_ID + "=" + ItemtoDB.getId() + " AND " + DBContract.ItemEntry.COLUMN_ITEM_POSITION + " LIKE \"" +
+                ItemtoDB.getPosition() + "\"";
         Cursor c = db.rawQuery(query, null);
         try {
             if (c.getCount() <= 0) {

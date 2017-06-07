@@ -39,7 +39,7 @@ public class ItemsInventory extends AppCompatActivity {
         ArrayList<Item> ItemsList = new ArrayList<>();
         ItemsList.clear();
 
-        String query = "SELECT * FROM " + DBContract.ItemEntry.TABLE_NAME; //+ " WHERE " + DBContract.ItemEntry.COLUMN_ITEMS_DEPARTMENT_ID + "=" + Selected_Department_ID;
+        String query = "SELECT * FROM " + DBContract.ItemEntry.TABLE_NAME + " WHERE " + DBContract.ItemEntry.COLUMN_ITEMS_DEPARTMENT_ID + "=" + Selected_Department_ID;
         Cursor c = dbHandler.selectQuery(query);
 
         if(c != null && c.getCount() != 0){
