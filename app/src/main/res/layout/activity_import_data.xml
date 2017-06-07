@@ -11,7 +11,7 @@
     <ListView
         style="@style/listStyle"
         android:id="@+id/storagesList"
-        android:layout_width="0dp"
+        android:layout_width="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginBottom="8dp"
