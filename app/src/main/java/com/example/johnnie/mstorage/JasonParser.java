@@ -19,16 +19,12 @@ public class JasonParser {
         int StorageID, DepartmentID, BelongsToStorage;
 
         ArrayList<Storage> StoragesArray = new ArrayList<>();
-
         JSONObject Storages = jsonresponse; //Get Jason object and store it in Storages
         loops = Storages.getInt("numberOfResults"); //Get number of storages the above object contains
-
         JSONArray storageArray = Storages.getJSONArray("wrappedResponse"); //Get the data for each storage
 
         for(int i=0; i<loops; i++){ //Loop through each storage and extract the data we want
-
             ArrayList<Department> DepartmentsArray = new ArrayList<>();
-
             JSONObject storageData = storageArray.getJSONObject(i); //Extracting data for the i storage found in storageArray array
 
             StorageName = storageData.getString("name"); //Extracting the name
@@ -48,10 +44,8 @@ public class JasonParser {
                     DepartmentsArray.add(new Department(DepartmentID, BelongsToStorage, DepartmentName)); //Store the i department's data in the DepartmentsArray (which is an ObjectArray containing objects of type Department) using the Department's constructor (See Department class)
                 }
             }
-
             StoragesArray.add(new Storage(StorageID, StorageName, DepartmentsArray)); //Store the i storage's data in the StoragesArray (which is an ObjectArray objects of type Storage) using the Storage's constructor (See Storage class)
         }
-
         return StoragesArray; //After the loop has finished, return the ObjectArray which is named StoragesArray
     }
 
@@ -74,7 +68,6 @@ public class JasonParser {
             int Item_Quantity = tempitem.getInt("quantity");
             JSONObject belongs_to = tempitem.getJSONObject("placedAtDepartment");
             int Item_department_id = belongs_to.getInt("id");
-
 
             ItemsList.add(new Item(Item_ID, Item_Name, Item_Desc, Item_Category,
                     Item_Position, Item_Measurement_Unit, Item_SKU, Item_Barcode,

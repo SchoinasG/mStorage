@@ -14,7 +14,7 @@ import android.util.Log;
 
 public class DBHandler extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION = 5;
+    private static final int DATABASE_VERSION = 6;
     private static final String DATABASE_NAME = "mStorage.db";
     private String TAG = "DbHelper";
 
@@ -37,7 +37,7 @@ public class DBHandler extends SQLiteOpenHelper {
                 " );";
 
         final String SQL_CREATE_ITEM_TABLE = "CREATE TABLE "+ DBContract.ItemEntry.TABLE_NAME + " (" +
-                DBContract.ItemEntry.COLUMN_ITEM_ID + " INTEGER PRIMARY KEY, " +
+                DBContract.ItemEntry.COLUMN_ITEM_ID + " INTEGER NOT NULL, " +
                 DBContract.ItemEntry.COLUMN_ITEM_NAME + " TEXT NOT NULL, " +
                 DBContract.ItemEntry.COLUMN_ITEM_DESCRIPTION + " TEXT NOT NULL, " +
                 DBContract.ItemEntry.COLUMN_ITEM_CATEGORY + " TEXT NOT NULL, " +
