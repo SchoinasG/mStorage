@@ -170,9 +170,9 @@ public class DBHandler extends SQLiteOpenHelper {
     }
 
     public void wipeData(){
-        String query[] = new String[] {"DELETE " + DBContract.StorageEntry.TABLE_NAME,
-                "DELETE TABLE " + DBContract.DepartmentEntry.TABLE_NAME,
-                "DELETE TABLE " + DBContract.ItemEntry.TABLE_NAME};
+        String query[] = new String[] {"DELETE FROM " + DBContract.StorageEntry.TABLE_NAME,
+                "DELETE FROM " + DBContract.DepartmentEntry.TABLE_NAME,
+                "DELETE FROM " + DBContract.ItemEntry.TABLE_NAME};
 
         for(int i=0; i<query.length; i++){
             executeQuery(query[i]);
