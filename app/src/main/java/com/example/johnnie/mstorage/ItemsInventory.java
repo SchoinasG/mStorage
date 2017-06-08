@@ -37,8 +37,6 @@ public class ItemsInventory extends AppCompatActivity {
 
         dbHandler = new DBHandler(ItemsInventory.this);
 
-        Toast.makeText(getApplicationContext(), Integer.toString(Selected_Department_ID), Toast.LENGTH_LONG).show();
-
         populateStoragesListView();
     }
 
