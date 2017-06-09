@@ -11,9 +11,9 @@ import android.widget.TextView;
 
 public class ItemDetailsInventory extends AppCompatActivity {
 
-    private TextView ItemName, ItemCode, ItemsDepartmentId, ItemCategory, ItemPosition, ItemQuantity, ItemMesUnit;
+    private TextView ItemName, ItemCode, ItemDescription, ItemsDepartmentId, ItemCategory, ItemPosition, ItemQuantity, ItemMesUnit;
     private Button DetailsButton;
-    private String Item_Name, Item_Code, Item_Category, Item_Position, Item_Mes_Unit;
+    private String Item_Name, Item_Code, Item_Description, Item_Category, Item_Position, Item_Mes_Unit;
     private int Items_Department_ID, Item_Quantity;
     private boolean detailsVisibility = true;
 
@@ -29,6 +29,7 @@ public class ItemDetailsInventory extends AppCompatActivity {
         //Get reference from listview
         ItemName = (TextView) findViewById(R.id.itemName);
         ItemCode = (TextView) findViewById(R.id.itemCode);
+        ItemDescription = (TextView) findViewById(R.id.itemDescription);
         ItemsDepartmentId = (TextView) findViewById(R.id.itemsDepartmentId);
         ItemCategory = (TextView) findViewById(R.id.itemCategory);
         ItemPosition = (TextView) findViewById(R.id.itemPosition);
@@ -40,6 +41,7 @@ public class ItemDetailsInventory extends AppCompatActivity {
         Bundle getTheItem = getIntent().getExtras();
         Item_Name = getTheItem.getString("Item_Name");
         Item_Code = getTheItem.getString("Item_Code");
+        Item_Description = getTheItem.getString("Item_Description");
         Items_Department_ID = getTheItem.getInt("Items_Department_ID");
         Item_Category = getTheItem.getString("Item_Category");
         Item_Position = getTheItem.getString("Item_Position");
@@ -48,6 +50,7 @@ public class ItemDetailsInventory extends AppCompatActivity {
 
         ItemName.setText("Item name: " + Item_Name);
         ItemCode.setText("Item SKU: " + Item_Code);
+        ItemDescription.setText("Item description: " + Item_Description);
         ItemsDepartmentId.setText("Item is in department: " + Integer.toString(Items_Department_ID));
         ItemCategory.setText("Item category: " + Item_Category);
         ItemPosition.setText("Item position: " + Item_Position);
@@ -58,12 +61,14 @@ public class ItemDetailsInventory extends AppCompatActivity {
     public void viewDetails(View v){
 
         if(detailsVisibility){
+            ItemDescription.setVisibility(View.GONE);
             ItemsDepartmentId.setVisibility(View.GONE);
             ItemCategory.setVisibility(View.GONE);
             ItemPosition.setVisibility(View.GONE);
             DetailsButton.setText("DETAILS    ▼");
             detailsVisibility = false;
         } else {
+            ItemDescription.setVisibility(View.VISIBLE);
             ItemsDepartmentId.setVisibility(View.VISIBLE);
             ItemCategory.setVisibility(View.VISIBLE);
             ItemPosition.setVisibility(View.VISIBLE);

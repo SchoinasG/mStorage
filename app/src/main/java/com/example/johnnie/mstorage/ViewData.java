@@ -69,14 +69,9 @@ public class ViewData extends AppCompatActivity {
 
                         Storage StorageClicked = (Storage) parent.getItemAtPosition(position); //get the storage object that the user clicked on and store it in a local object of type Storage to manipulate it as we want
 
-                        //if(StorageClicked.getStorageDepartments().size() == 0){ //If storage contain no departments, show a toast and don't enter the intent
-                        //    Toast toast = Toast.makeText(getApplicationContext(), "This storage contains no departments!", Toast.LENGTH_LONG);
-                        //    toast.show();
-                        //} else { //If storage contains departments go to departments selection intent
-                            i = new Intent(getApplicationContext(), DepartmentsSelectionInventory.class); //Initiate intent object
-                            i.putExtra("Storage_ID", StorageClicked.getId());
-                            startActivity(i); //Start the new activity
-                        //}
+                        i = new Intent(getApplicationContext(), DepartmentsSelectionInventory.class); //Initiate intent object
+                        i.putExtra("Storage_ID", StorageClicked.getId());
+                        startActivity(i); //Start the new activity
                     }
                 }
         );

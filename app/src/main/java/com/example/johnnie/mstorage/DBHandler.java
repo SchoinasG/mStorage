@@ -27,13 +27,13 @@ public class DBHandler extends SQLiteOpenHelper {
 
         final String SQL_CREATE_STORAGE_TABLE = "CREATE TABLE "+ DBContract.StorageEntry.TABLE_NAME + " (" +
                 DBContract.StorageEntry.COLUMN_STORAGE_ID + " INTEGER PRIMARY KEY, " +
-                DBContract.StorageEntry.COLUMN_STORAGE_NAME+" TEXT"+
+                DBContract.StorageEntry.COLUMN_STORAGE_NAME + " TEXT" +
                 " );";
 
         final String SQL_CREATE_DEPARTMENT_TABLE = "CREATE TABLE "+ DBContract.DepartmentEntry.TABLE_NAME + " (" +
                 DBContract.DepartmentEntry.COLUMN_DEPARTMENT_ID + " INTEGER PRIMARY KEY, " +
-                DBContract.DepartmentEntry.COLUMN_DEPARTMENT_NAME+" TEXT NOT NULL, "+
-                DBContract.DepartmentEntry.COLUMN_BELONGS_TO_STORAGE+" INTEGER NOT NULL"+
+                DBContract.DepartmentEntry.COLUMN_DEPARTMENT_NAME + " TEXT NOT NULL, " +
+                DBContract.DepartmentEntry.COLUMN_BELONGS_TO_STORAGE + " INTEGER NOT NULL" +
                 " );";
 
         final String SQL_CREATE_ITEM_TABLE = "CREATE TABLE "+ DBContract.ItemEntry.TABLE_NAME + " (" +
@@ -46,10 +46,10 @@ public class DBHandler extends SQLiteOpenHelper {
                 DBContract.ItemEntry.COLUMN_ITEM_QUANTITY + " INTEGER NOT NULL, " +
                 DBContract.ItemEntry.COLUMN_ITEM_BARCODE + " TEXT NOT NULL, " +
                 DBContract.ItemEntry.COLUMN_ITEM_SKU + " TEXT NOT NULL, " +
-                DBContract.ItemEntry.COLUMN_ITEMS_DEPARTMENT_ID + " INTEGER NOT NULL,"+
-                " PRIMARY KEY ("+DBContract.ItemEntry.COLUMN_ITEM_ID+", "+
-                DBContract.ItemEntry.COLUMN_ITEMS_DEPARTMENT_ID+", "+
-                DBContract.ItemEntry.COLUMN_ITEM_POSITION+") )";
+                DBContract.ItemEntry.COLUMN_ITEMS_DEPARTMENT_ID + " INTEGER NOT NULL," +
+                " PRIMARY KEY (" + DBContract.ItemEntry.COLUMN_ITEM_ID + ", " +
+                DBContract.ItemEntry.COLUMN_ITEMS_DEPARTMENT_ID + ", " +
+                DBContract.ItemEntry.COLUMN_ITEM_POSITION + ") )";
 
         db.execSQL(SQL_CREATE_STORAGE_TABLE);
         db.execSQL(SQL_CREATE_DEPARTMENT_TABLE);

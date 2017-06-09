@@ -83,6 +83,7 @@ public class ItemsInventory extends AppCompatActivity {
                         i = new Intent(getApplicationContext(), ItemDetailsInventory.class); //Initiate intent object
                         i.putExtra("Item_Name", ItemClicked.getName());
                         i.putExtra("Item_Code", ItemClicked.getSKU());
+                        i.putExtra("Item_Description", ItemClicked.getDescription());
                         i.putExtra("Items_Department_ID", ItemClicked.getItems_department_id());
                         i.putExtra("Item_Category", ItemClicked.getCategory());
                         i.putExtra("Item_Position", ItemClicked.getPosition());

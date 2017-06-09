@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -44,10 +43,18 @@
         android:onClick="viewDetails"/>
 
     <TextView
+        android:text="Item Desc"
+        android:textSize="14dp"
+        android:textColor="#3c4c51"
+        android:layout_marginBottom="7dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/itemDescription"/>
+
+    <TextView
         android:text="Item Dep ID"
         android:textSize="16dp"
         android:textColor="#0481ad"
-        android:textStyle="bold"
         android:layout_marginBottom="7dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -57,7 +64,6 @@
         android:text="Item Category"
         android:textSize="16dp"
         android:textColor="#0481ad"
-        android:textStyle="bold"
         android:layout_marginBottom="7dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -67,7 +73,6 @@
         android:text="Item Position"
         android:textSize="16dp"
         android:textColor="#0481ad"
-        android:textStyle="bold"
         android:layout_marginBottom="7dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
