@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.example.johnnie.mstorage.DBContract;
 import com.example.johnnie.mstorage.DBHandler;
@@ -95,14 +96,20 @@ public class DepartmentAudit extends AppCompatActivity {
 
                         final Department DepartmentClicked = (Department) parent.getItemAtPosition(position); //get the department object that the user clicked on and store it in a local object of type Department to manipulate it as we want
 
-
                         // Add dialog message
                         builder.setMessage("START NEW AUDIT OR RESUME");
                         // Add the buttons
                         builder.setPositiveButton("NEW", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 // User clicked OK button
-                                dbHandler.CopyToAudit(DepartmentClicked);
+                                if(dbHandler.CopyToAudit(DepartmentClicked)){
+                                    i = new Intent(getApplicationContext(), ItemAudit.class); //Initiate intent object
+                                    i.putExtra("Department_ID", DepartmentClicked.getId());
+                                    startActivity(i); //Start the new activity
+                                }
+                                else{
+                                    Toast.makeText(DepartmentAudit.this, "An Error has occured", Toast.LENGTH_SHORT).show();
+                                }
                             }
                         });
 
@@ -110,15 +117,15 @@ public class DepartmentAudit extends AppCompatActivity {
                             public void onClick(DialogInterface dialog, int id) {
                                 // User cancelled the dialog
                                 Log.d(TAG,"RESUMING PREVIOUS AUDIT");
+                                i = new Intent(getApplicationContext(), ItemAudit.class); //Initiate intent object
+                                i.putExtra("Department_ID", DepartmentClicked.getId());
+                                startActivity(i); //Start the new activity
                             }
                         });
 
                         AlertDialog StartAuditAlert = builder.create();
 
                         StartAuditAlert.show();
-//                        i = new Intent(getApplicationContext(), ItemAudit.class); //Initiate intent object
-//                        i.putExtra("Department_ID", DepartmentClicked.getId());
-//                        startActivity(i); //Start the new activity
                     }
                 }
         );

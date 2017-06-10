@@ -77,6 +77,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/itemPosition"/>
+    <TextView
+        android:text="Item Notes"
+        android:textSize="16dp"
+        android:textColor="#0481ad"
+        android:layout_marginBottom="7dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/itemNotes"/>
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -84,7 +92,26 @@
         android:orientation="horizontal">
 
         <TextView
-            android:text="0/4"
+            android:text="0"
+            android:textSize="22dp"
+            android:textColor="#0481ad"
+            android:textStyle="bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="7dp"
+            android:id="@+id/itemQuantityFound"/>
+        <TextView
+            android:text="/"
+            android:textSize="22dp"
+            android:textColor="#0481ad"
+            android:textStyle="bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="7dp"
+            android:id="@+id/Separator"/>
+
+        <TextView
+            android:text="1"
             android:textSize="22dp"
             android:textColor="#0481ad"
             android:textStyle="bold"
@@ -103,6 +130,14 @@
             android:id="@+id/itemMesUnit"/>
 
     </LinearLayout>
+    <TextView
+        android:text="Item Date Modified"
+        android:textSize="16dp"
+        android:textColor="#0481ad"
+        android:layout_marginBottom="7dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/itemDateModified"/>
 
     <View
         android:layout_width="match_parent"
@@ -120,9 +155,9 @@
             android:layout_height="wrap_content"
             android:text="-"
             android:layout_marginEnd="23dp"
-            android:layout_alignBaseline="@+id/QuantitySeter"
-            android:layout_alignBottom="@+id/QuantitySeter"
-            android:layout_toStartOf="@+id/QuantitySeter" />
+            android:layout_alignBaseline="@+id/QuantitySetter"
+            android:layout_alignBottom="@+id/QuantitySetter"
+            android:layout_toStartOf="@+id/QuantitySetter" />
 
         <Button
             android:id="@+id/AddToQuantity"
@@ -131,10 +166,10 @@
             android:text="+"
             android:layout_marginStart="27dp"
             android:layout_centerVertical="true"
-            android:layout_toEndOf="@+id/QuantitySeter" />
+            android:layout_toEndOf="@+id/QuantitySetter" />
 
         <EditText
-            android:id="@+id/QuantitySeter"
+            android:id="@+id/QuantitySetter"
             android:layout_width="56dp"
             android:layout_height="41dp"
             android:ems="10"

@@ -13,6 +13,7 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 /**
@@ -21,7 +22,7 @@ import java.util.Date;
 
 public class DBHandler extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION = 7;
+    private static final int DATABASE_VERSION = 12;
     private static final String DATABASE_NAME = "mStorage.db";
     private String TAG = "DbHelper";
 
@@ -70,7 +71,8 @@ public class DBHandler extends SQLiteOpenHelper {
                 DBContract.ItemAudit.COLUMN_ITEM_QUANTITY + " INTEGER NOT NULL, " +
                 DBContract.ItemAudit.COLUMN_ITEM_BARCODE + " TEXT NOT NULL, " +
                 DBContract.ItemAudit.COLUMN_ITEM_SKU + " TEXT NOT NULL, " +
-                DBContract.ItemAudit.COLUMN_ITEMS_DEPARTMENT_ID + " INTEGER NOT NULL," +
+                DBContract.ItemAudit.COLUMN_ITEMS_DEPARTMENT_ID + " INTEGER NOT NULL, " +
+                DBContract.ItemAudit.COLUMN_ITEM_QUANTITY_FOUND + " INTEGER DEFAULT 0, " +
                 DBContract.ItemAudit.COLUMN_ITEM_NOTES + " TEXT, " +
                 DBContract.ItemAudit.COLUMN_ITEM_DATE_MODIFIED + " TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL, " +
                 DBContract.ItemAudit.COLUMN_ITEM_IS_CHECKED + " INTEGER DEFAULT 0," +
@@ -99,6 +101,7 @@ public class DBHandler extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + DBContract.StorageEntry.TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + DBContract.DepartmentEntry.TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + DBContract.ItemEntry.TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + DBContract.ItemAudit.TABLE_NAME);
         onCreate(db);
     }
 
@@ -207,7 +210,7 @@ public class DBHandler extends SQLiteOpenHelper {
         c.close();
     }
 
-    public void CopyToAudit(Department department){
+    public boolean CopyToAudit(Department department){
         Log.d(TAG," inside Copy to Audit");
         SQLiteDatabase db = getWritableDatabase();
 
@@ -240,10 +243,12 @@ public class DBHandler extends SQLiteOpenHelper {
         }
         catch (final SQLException e)   {
             Log.d(TAG, e.toString());
+            return false;
         }
         finally{
             db.close();
             c.close();
+            return true;
         }
 
     }
@@ -316,6 +321,69 @@ public class DBHandler extends SQLiteOpenHelper {
         cursor.close();
         Log.d("TAG_NAME", resultSet.toString() );
         return resultSet;
+    }
+
+    public ArrayList<Item> ItemPopulator(int Selected_Department_ID){
+        ArrayList<Item> ItemList = new ArrayList<>();
+        SQLiteDatabase db = getWritableDatabase();
+
+        //+ " ORDER BY " + DBContract.ItemAudit.COLUMN_ITEM_ID + " ASC "
+        String query = "SELECT * FROM " + DBContract.ItemAudit.TABLE_NAME + " WHERE " + DBContract.ItemAudit.COLUMN_ITEMS_DEPARTMENT_ID + "=" + Selected_Department_ID;
+
+        Cursor c = db.rawQuery(query, null);
+
+        if(c != null && c.getCount() != 0){
+            if(c.moveToFirst()){
+                do{
+                    int itemId = c.getInt(c.getColumnIndex(DBContract.ItemAudit.COLUMN_ITEM_ID));
+                    String itemName = c.getString(c.getColumnIndex(DBContract.ItemAudit.COLUMN_ITEM_NAME));
+                    String itemDesc = c.getString(c.getColumnIndex(DBContract.ItemAudit.COLUMN_ITEM_DESCRIPTION));
+                    String itemCategory = c.getString(c.getColumnIndex(DBContract.ItemAudit.COLUMN_ITEM_CATEGORY));
+                    String itemPosition = c.getString(c.getColumnIndex(DBContract.ItemAudit.COLUMN_ITEM_POSITION));
+                    String itemMesUnit = c.getString(c.getColumnIndex(DBContract.ItemAudit.COLUMN_ITEM_MEASUREMENT));
+                    String itemSKU = c.getString(c.getColumnIndex(DBContract.ItemAudit.COLUMN_ITEM_SKU));
+                    String itemBarcode = c.getString(c.getColumnIndex(DBContract.ItemAudit.COLUMN_ITEM_BARCODE));
+                    int itemQuantity = c.getInt(c.getColumnIndex(DBContract.ItemAudit.COLUMN_ITEM_QUANTITY));
+                    int departmentID = c.getInt(c.getColumnIndex(DBContract.ItemAudit.COLUMN_ITEMS_DEPARTMENT_ID));
+                    int itemQuantityFound = c.getInt(c.getColumnIndex(DBContract.ItemAudit.COLUMN_ITEM_QUANTITY_FOUND));
+                    String itemsNotes = c.getString(c.getColumnIndex(DBContract.ItemAudit.COLUMN_ITEM_NOTES));
+                    String itemsDateModified = c.getString(c.getColumnIndex(DBContract.ItemAudit.COLUMN_ITEM_DATE_MODIFIED));
+                    int itemCheckedStatus = c.getInt(c.getColumnIndex(DBContract.ItemAudit.COLUMN_ITEM_IS_CHECKED));
+
+                    Item item = new Item(itemId, itemName, itemDesc, itemCategory, itemPosition, itemMesUnit, itemSKU, itemBarcode, itemQuantity, departmentID);
+
+                    item.setQuantity_found(itemQuantityFound);
+                    item.setNotes(itemsNotes);
+                    item.setDate_modified(itemsDateModified);
+                    item.setIs_checked(itemCheckedStatus);
+
+                    ItemList.add(item);
+                }while(c.moveToNext());
+            }
+        }
+
+        c.close();
+
+        return ItemList;
+    }
+
+    public boolean UpdateQuantityFound(Item Updateitem){
+        SQLiteDatabase db = getWritableDatabase();
+
+        try {
+            ContentValues values = new ContentValues();
+            values.put(DBContract.ItemAudit.COLUMN_ITEM_QUANTITY_FOUND, Updateitem.getQuantity_found());
+            db.update(DBContract.ItemAudit.TABLE_NAME, values , DBContract.ItemAudit.COLUMN_ITEM_ID + "=" + Updateitem.getId() +
+                    " AND " + DBContract.ItemAudit.COLUMN_ITEMS_DEPARTMENT_ID + " = "+ Updateitem.getItems_department_id() , null);
+        }
+        catch (final SQLException e)   {
+            Log.d(TAG, e.toString());
+            return false;
+        }
+        finally{
+            db.close();
+            return true;
+        }
     }
 
 }

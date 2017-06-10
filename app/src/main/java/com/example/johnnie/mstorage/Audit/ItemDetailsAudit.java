@@ -1,5 +1,6 @@
 package com.example.johnnie.mstorage.Audit;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -8,7 +9,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.johnnie.mstorage.DBHandler;
+import com.example.johnnie.mstorage.Item;
 import com.example.johnnie.mstorage.R;
 
 /**
@@ -17,12 +21,15 @@ import com.example.johnnie.mstorage.R;
 
 public class ItemDetailsAudit extends AppCompatActivity{
 
-    private TextView ItemName, ItemCode, ItemDescription, ItemsDepartmentId, ItemCategory, ItemPosition, ItemQuantity, ItemMesUnit;
+    private TextView ItemName, ItemCode, ItemDescription, ItemsDepartmentId, ItemCategory, ItemPosition, ItemQuantity, ItemMesUnit, ItemNotes, ItemDateM, ItemQuantityFound;
     private Button DetailsButton, AddtoQuantity, SubFromQuantity;
     private EditText SetQuantity;
-    private String Item_Name, Item_Code, Item_Description, Item_Category, Item_Position, Item_Mes_Unit;
-    private int Items_Department_ID, Item_Quantity, TempItemQuantity;
+    private int TempItemQuantity, InitialItemQuantity;
     private boolean detailsVisibility = true;
+
+    private DBHandler dbHandler ;
+
+    private Item ClickedItem;
 
     private static final String TAG = ("/////--ItemDetailsAudit");
 
@@ -35,6 +42,10 @@ public class ItemDetailsAudit extends AppCompatActivity{
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         getSupportActionBar().setCustomView(R.layout.titlebar);
 
+        Intent i = getIntent();
+        ClickedItem = (Item)i.getSerializableExtra("ClickedItem");
+        dbHandler = new DBHandler(ItemDetailsAudit.this);
+
         //Get reference from listview
         ItemName = (TextView) findViewById(R.id.itemName);
         ItemCode = (TextView) findViewById(R.id.itemCode);
@@ -45,41 +56,42 @@ public class ItemDetailsAudit extends AppCompatActivity{
         ItemQuantity = (TextView) findViewById(R.id.itemQuantity);
         ItemMesUnit = (TextView) findViewById(R.id.itemMesUnit);
         DetailsButton = (Button) findViewById(R.id.detailsButton);
-        SetQuantity = (EditText) findViewById(R.id.QuantitySeter);
+        ItemNotes = (TextView) findViewById(R.id.itemNotes);
+        ItemQuantityFound = (TextView) findViewById(R.id.itemQuantityFound);
+        ItemDateM = (TextView) findViewById(R.id.itemDateModified);
+
+
+        // Quantity setters
+        SetQuantity = (EditText) findViewById(R.id.QuantitySetter);
         AddtoQuantity = (Button) findViewById(R.id.AddToQuantity);
         SubFromQuantity = (Button) findViewById(R.id.SubFromQuantity);
 
-        //Get Departments data from extra
-        Bundle getTheItem = getIntent().getExtras();
-        Item_Name = getTheItem.getString("Item_Name");
-        Item_Code = getTheItem.getString("Item_Code");
-        Item_Description = getTheItem.getString("Item_Description");
-        Items_Department_ID = getTheItem.getInt("Items_Department_ID");
-        Item_Category = getTheItem.getString("Item_Category");
-        Item_Position = getTheItem.getString("Item_Position");
-        Item_Quantity = getTheItem.getInt("Item_Quantity");
-        Item_Mes_Unit = getTheItem.getString("Item_Mes_Unit");
-
-        ItemName.setText("Item name: " + Item_Name);
-        ItemCode.setText("Item SKU: " + Item_Code);
-        ItemDescription.setText("Item description: " + Item_Description);
-        ItemsDepartmentId.setText("Item is in department: " + Integer.toString(Items_Department_ID));
-        ItemCategory.setText("Item category: " + Item_Category);
-        ItemPosition.setText("Item position: " + Item_Position);
-        ItemQuantity.setText(Integer.toString(Item_Quantity));
-        ItemMesUnit.setText(Item_Mes_Unit);
 
 
-        TempItemQuantity = 0;
+        ItemName.setText("Item name: " + ClickedItem.getName());
+        ItemCode.setText("Item SKU: " + ClickedItem.getSKU());
+        ItemDescription.setText("Item description: " + ClickedItem.getDescription());
+        ItemsDepartmentId.setText("Item is in department: " + ClickedItem.getId());
+        ItemCategory.setText("Item category: " + ClickedItem.getCategory());
+        ItemPosition.setText("Item position: " + ClickedItem.getPosition());
+        ItemQuantity.setText(Integer.toString(ClickedItem.getQuantity()));
+        ItemMesUnit.setText(ClickedItem.getMeasurement_unit());
+        SetQuantity.setText(Integer.toString(ClickedItem.getQuantity_found()));
+        //Additional Audit collumns
+        ItemNotes.setText(ClickedItem.getNotes());
+        ItemQuantityFound.setText(Integer.toString(ClickedItem.getQuantity_found()));
+        ItemDateM.setText(ClickedItem.getDate_modified());
 
-        SetQuantity.setText(String.valueOf(TempItemQuantity));
+        TempItemQuantity = ClickedItem.getQuantity_found();
+        InitialItemQuantity = ClickedItem.getQuantity_found();
 
         AddtoQuantity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.d(TAG ,"Clicked Add");
                 TempItemQuantity++;
-                SetQuantity.setText(String.valueOf(TempItemQuantity));
+                ClickedItem.setQuantity_found(TempItemQuantity);
+                UpdateIt(ClickedItem);
             }
         });
 
@@ -88,7 +100,8 @@ public class ItemDetailsAudit extends AppCompatActivity{
             public void onClick(View v) {
                 Log.d(TAG ,"Clicked Sub");
                 TempItemQuantity--;
-                SetQuantity.setText(String.valueOf(TempItemQuantity));
+                ClickedItem.setQuantity_found(TempItemQuantity);
+                UpdateIt(ClickedItem);
             }
         });
 
@@ -112,6 +125,30 @@ public class ItemDetailsAudit extends AppCompatActivity{
             DetailsButton.setText("DETAILS    ▲");
             detailsVisibility = true;
         }
+    }
+
+    private void UpdateIt(Item theitem){
+
+        Log.d("THIS IS TO BE UPDATED",""+theitem.getQuantity_found());
+        if( dbHandler.UpdateQuantityFound(theitem) )
+        {
+            SetQuantity.setText(String.valueOf(TempItemQuantity));
+            ItemQuantityFound.setText(String.valueOf(ClickedItem.getQuantity_found()));
+            InitialItemQuantity = TempItemQuantity;
+        }
+        else{
+            TempItemQuantity = InitialItemQuantity;
+            ClickedItem.setQuantity_found(InitialItemQuantity);
+            Toast.makeText(ItemDetailsAudit.this, "Na Error occurred try again", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        // do something on back.
+        Intent intent = new Intent();
+        setResult(RESULT_OK,intent );
+        finish();
     }
 
 }

@@ -74,6 +74,8 @@ public class DBContract {
 
         public static final String COLUMN_ITEMS_DEPARTMENT_ID = "item_department_id";
 
+        public static final String COLUMN_ITEM_QUANTITY_FOUND = "item_quantity_found";
+
         public static final String COLUMN_ITEM_NOTES = "item_notes";
 
         public static final String COLUMN_ITEM_DATE_MODIFIED = "date_modified";

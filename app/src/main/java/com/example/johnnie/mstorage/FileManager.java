@@ -1,7 +1,9 @@
 package com.example.johnnie.mstorage;
 
 import android.content.Context;
+import android.nfc.Tag;
 import android.os.Environment;
+import android.util.Log;
 import android.view.ViewDebug;
 import android.widget.Toast;
 
@@ -26,10 +28,20 @@ public class FileManager {
         String sFileName = "Sid="+String.valueOf(StorId)+"-Did="+String.valueOf(DepId)+"-Date="+Date+".txt";
         if(Environment.MEDIA_MOUNTED.equals(storageState)) {
             try {
-                File root = new File(Environment.getExternalStorageDirectory(), "Audits");
-                if (!root.exists()) {
-                    root.mkdirs();
-                }
+                File sdCard = Environment.getExternalStorageDirectory();
+                File root = new File(sdCard.getAbsolutePath()+"/");
+
+//                try{
+//                    if(root.mkdirs()) {
+//                        Log.d("====>","Directory created");
+//                    } else {
+//                        Log.d("====>","Directory is not created");
+//                    }
+//                }catch(Exception e){
+//                    e.printStackTrace();
+//                }
+                Log.d("MY ROOT",""+root);
+                //ACCESS DENIED TO CREATE FILE IN EXTERNAL STORAGE
                 File gpxfile = new File(root, sFileName);
                 if (!gpxfile.exists()) {
                     gpxfile.createNewFile();
