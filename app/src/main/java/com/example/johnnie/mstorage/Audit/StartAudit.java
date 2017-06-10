@@ -1,16 +1,20 @@
-package com.example.johnnie.mstorage;
+package com.example.johnnie.mstorage.Audit;
 
 import android.content.Intent;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.SimpleCursorAdapter;
 import android.widget.Toast;
+
+import com.example.johnnie.mstorage.DBContract;
+import com.example.johnnie.mstorage.DBHandler;
+import com.example.johnnie.mstorage.R;
+import com.example.johnnie.mstorage.Storage;
+import com.example.johnnie.mstorage.StorageAdapterForInventory;
 
 import java.util.ArrayList;
 
@@ -19,6 +23,8 @@ public class StartAudit extends AppCompatActivity {
     private ListView StoragesListView;
     private DBHandler dbHandler;
     private Intent i;
+
+    private static final String TAG = ("/////--StartAudit");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

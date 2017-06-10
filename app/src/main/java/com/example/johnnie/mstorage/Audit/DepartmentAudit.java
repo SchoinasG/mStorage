@@ -1,16 +1,28 @@
-package com.example.johnnie.mstorage;
+package com.example.johnnie.mstorage.Audit;
 
 /**
  * Created by Johnnie on 8/6/2017.
  */
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.DialogFragment;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+
+import com.example.johnnie.mstorage.DBContract;
+import com.example.johnnie.mstorage.DBHandler;
+import com.example.johnnie.mstorage.Department;
+import com.example.johnnie.mstorage.DepartmentAdapterForInventory;
+import com.example.johnnie.mstorage.ItemsInventory;
+import com.example.johnnie.mstorage.R;
 
 import java.util.ArrayList;
 
@@ -19,6 +31,10 @@ public class DepartmentAudit extends AppCompatActivity {
     private DBHandler dbHandler;
     private int Selected_Storage_ID;
     private Intent i;
+
+    private static final String TAG = ("/////--DepartmentAudit");
+
+    private AlertDialog.Builder builder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +54,12 @@ public class DepartmentAudit extends AppCompatActivity {
 
         dbHandler = new DBHandler(DepartmentAudit.this);
 
+        this.builder = new AlertDialog.Builder(this);
+
         populateStoragesListView();
+
+
+
     }
 
     public void populateStoragesListView(){
@@ -72,14 +93,38 @@ public class DepartmentAudit extends AppCompatActivity {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) { //on item clicked
 
-                        Department DepartmentClicked = (Department) parent.getItemAtPosition(position); //get the department object that the user clicked on and store it in a local object of type Department to manipulate it as we want
+                        final Department DepartmentClicked = (Department) parent.getItemAtPosition(position); //get the department object that the user clicked on and store it in a local object of type Department to manipulate it as we want
 
-                        i = new Intent(getApplicationContext(), ItemsInventory.class); //Initiate intent object
-                        i.putExtra("Department_ID", DepartmentClicked.getId());
-                        startActivity(i); //Start the new activity
+
+                        // Add dialog message
+                        builder.setMessage("START NEW AUDIT OR RESUME");
+                        // Add the buttons
+                        builder.setPositiveButton("NEW", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                // User clicked OK button
+                                dbHandler.CopyToAudit(DepartmentClicked);
+                            }
+                        });
+
+                        builder.setNegativeButton("RESUME", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                // User cancelled the dialog
+                                Log.d(TAG,"RESUMING PREVIOUS AUDIT");
+                            }
+                        });
+
+                        AlertDialog StartAuditAlert = builder.create();
+
+                        StartAuditAlert.show();
+//                        i = new Intent(getApplicationContext(), ItemAudit.class); //Initiate intent object
+//                        i.putExtra("Department_ID", DepartmentClicked.getId());
+//                        startActivity(i); //Start the new activity
                     }
                 }
         );
 
     }
+
 }
+
+

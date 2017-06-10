@@ -49,4 +49,35 @@ public class DBContract {
 
         public static final String COLUMN_ITEMS_DEPARTMENT_ID = "item_department_id";
     }
+
+
+    public static final class ItemAudit implements BaseColumns {
+        public static final String TABLE_NAME = "items_audit";
+
+        public static final String COLUMN_ITEM_ID = "item_id";
+
+        public static final String COLUMN_ITEM_NAME = "item_name";
+
+        public static final String COLUMN_ITEM_DESCRIPTION = "item_desc";
+
+        public static final String COLUMN_ITEM_SKU = "item_sku";
+
+        public static final String COLUMN_ITEM_MEASUREMENT = "item_measurement_unit";
+
+        public static final String COLUMN_ITEM_CATEGORY = "item_category";
+
+        public static final String COLUMN_ITEM_POSITION = "item_position";
+
+        public static final String COLUMN_ITEM_BARCODE = "item_barcode";
+
+        public static final String COLUMN_ITEM_QUANTITY = "item_quantity";
+
+        public static final String COLUMN_ITEMS_DEPARTMENT_ID = "item_department_id";
+
+        public static final String COLUMN_ITEM_NOTES = "item_notes";
+
+        public static final String COLUMN_ITEM_DATE_MODIFIED = "date_modified";
+
+        public static final String COLUMN_ITEM_IS_CHECKED = "item_checked";
+    }
 }

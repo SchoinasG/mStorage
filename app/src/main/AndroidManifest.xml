@@ -3,6 +3,8 @@
     package="com.example.johnnie.mstorage">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -21,13 +23,15 @@
         <activity android:name=".HomeActivity" />
         <activity android:name=".ImportData" />
         <activity android:name=".ViewData" />
-        <activity android:name=".StartAudit" />
+        <activity android:name=".Audit.StartAudit" />
         <activity android:name=".MakeReport" />
         <activity android:name=".DepartmentsSelection" />
         <activity android:name=".DepartmentsSelectionInventory" />
         <activity android:name=".ItemsInventory" />
         <activity android:name=".ItemDetailsInventory"/>
-        <activity android:name=".DepartmentAudit"/>
+        <activity android:name=".Audit.DepartmentAudit"/>
+        <activity android:name=".Audit.ItemAudit"/>
+        <activity android:name=".Audit.ItemDetailsAudit"/>
     </application>
 
 </manifest>

@@ -8,15 +8,24 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
  * Created by Masterace on 5/6/2017.
  */
 
 public class DBHandler extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION = 6;
+    private static final int DATABASE_VERSION = 7;
     private static final String DATABASE_NAME = "mStorage.db";
     private String TAG = "DbHelper";
+
+    Context context;
 
     public DBHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -51,9 +60,38 @@ public class DBHandler extends SQLiteOpenHelper {
                 DBContract.ItemEntry.COLUMN_ITEMS_DEPARTMENT_ID + ", " +
                 DBContract.ItemEntry.COLUMN_ITEM_POSITION + ") )";
 
+        final String SQL_CREATE_AUDIT_TABLE = "CREATE TABLE "+ DBContract.ItemAudit.TABLE_NAME + " (" +
+                DBContract.ItemAudit.COLUMN_ITEM_ID + " INTEGER NOT NULL, " +
+                DBContract.ItemAudit.COLUMN_ITEM_NAME + " TEXT NOT NULL, " +
+                DBContract.ItemAudit.COLUMN_ITEM_DESCRIPTION + " TEXT NOT NULL, " +
+                DBContract.ItemAudit.COLUMN_ITEM_CATEGORY + " TEXT NOT NULL, " +
+                DBContract.ItemAudit.COLUMN_ITEM_MEASUREMENT + " TEXT NOT NULL, " +
+                DBContract.ItemAudit.COLUMN_ITEM_POSITION + " TEXT NOT NULL, " +
+                DBContract.ItemAudit.COLUMN_ITEM_QUANTITY + " INTEGER NOT NULL, " +
+                DBContract.ItemAudit.COLUMN_ITEM_BARCODE + " TEXT NOT NULL, " +
+                DBContract.ItemAudit.COLUMN_ITEM_SKU + " TEXT NOT NULL, " +
+                DBContract.ItemAudit.COLUMN_ITEMS_DEPARTMENT_ID + " INTEGER NOT NULL," +
+                DBContract.ItemAudit.COLUMN_ITEM_NOTES + " TEXT, " +
+                DBContract.ItemAudit.COLUMN_ITEM_DATE_MODIFIED + " TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL, " +
+                DBContract.ItemAudit.COLUMN_ITEM_IS_CHECKED + " INTEGER DEFAULT 0," +
+                " PRIMARY KEY (" + DBContract.ItemAudit.COLUMN_ITEM_ID + ", " +
+                DBContract.ItemAudit.COLUMN_ITEMS_DEPARTMENT_ID + ", " +
+                DBContract.ItemAudit.COLUMN_ITEM_POSITION + ") )";
+
+        final String SQL_AUDIT_TABLE_TRIGGER =
+                "CREATE TRIGGER DATE_MODIFIED AFTER UPDATE ON " + DBContract.ItemAudit.TABLE_NAME +
+                " FOR EACH ROW WHEN NEW."+ DBContract.ItemAudit.COLUMN_ITEM_DATE_MODIFIED +" < OLD."+ DBContract.ItemAudit.COLUMN_ITEM_DATE_MODIFIED +
+                " BEGIN UPDATE " + DBContract.ItemAudit.TABLE_NAME + " SET "+ DBContract.ItemAudit.COLUMN_ITEM_DATE_MODIFIED +
+                " = CURRENT_TIMESTAMP WHERE "
+                +DBContract.ItemAudit.COLUMN_ITEM_ID + "=OLD." +DBContract.ItemAudit.COLUMN_ITEM_ID +
+                " AND "+DBContract.ItemAudit.COLUMN_ITEMS_DEPARTMENT_ID + "=OLD." +DBContract.ItemAudit.COLUMN_ITEMS_DEPARTMENT_ID +";"+
+                " END";
+
         db.execSQL(SQL_CREATE_STORAGE_TABLE);
         db.execSQL(SQL_CREATE_DEPARTMENT_TABLE);
         db.execSQL(SQL_CREATE_ITEM_TABLE);
+        db.execSQL(SQL_CREATE_AUDIT_TABLE);
+        db.execSQL(SQL_AUDIT_TABLE_TRIGGER);
     }
 
     @Override
@@ -169,6 +207,47 @@ public class DBHandler extends SQLiteOpenHelper {
         c.close();
     }
 
+    public void CopyToAudit(Department department){
+        Log.d(TAG," inside Copy to Audit");
+        SQLiteDatabase db = getWritableDatabase();
+
+        String query = "SELECT * FROM "+  DBContract.ItemAudit.TABLE_NAME +
+                " WHERE " + DBContract.ItemAudit.COLUMN_ITEMS_DEPARTMENT_ID + " = " + department.getId() + ";";
+        Cursor c = db.rawQuery(query, null);
+        try {
+            if (c.getCount() <= 0)
+            {
+                Log.d(TAG,"NOT FOUND ANY DATA IN TABLE");
+                String SQL_COPY_ITEMS_TO_AUDIT = "INSERT INTO " + DBContract.ItemAudit.TABLE_NAME +
+                        "( "+ DBContract.ItemAudit.COLUMN_ITEM_ID +", "+ DBContract.ItemAudit.COLUMN_ITEM_NAME +
+                        ", "+ DBContract.ItemAudit.COLUMN_ITEM_DESCRIPTION +", "+ DBContract.ItemAudit.COLUMN_ITEM_CATEGORY +
+                        ", "+ DBContract.ItemAudit.COLUMN_ITEM_MEASUREMENT +", "+ DBContract.ItemAudit.COLUMN_ITEM_POSITION +
+                        ", "+ DBContract.ItemAudit.COLUMN_ITEM_QUANTITY + ", "+ DBContract.ItemAudit.COLUMN_ITEM_BARCODE +
+                        ", "+ DBContract.ItemAudit.COLUMN_ITEM_SKU + ", "+ DBContract.ItemAudit.COLUMN_ITEMS_DEPARTMENT_ID +
+                        " ) SELECT * FROM " + DBContract.ItemEntry.TABLE_NAME +
+                        " WHERE "+ DBContract.ItemEntry.COLUMN_ITEMS_DEPARTMENT_ID +" = " + department.getId() + ";";
+                db = getWritableDatabase();
+                db.execSQL(SQL_COPY_ITEMS_TO_AUDIT);
+            } else
+            {
+                Log.d(TAG,"FOUND DATA IN TABLE");
+                Date curDate = new Date();
+                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+                String DateToStr = format.format(curDate);
+                FileManager FileSaver = new FileManager();
+                FileSaver.writeFileonSd(this.context, department.getStorageid(), department.getId(), department.getName(), DateToStr, TableToJSONArray(query));
+            }
+        }
+        catch (final SQLException e)   {
+            Log.d(TAG, e.toString());
+        }
+        finally{
+            db.close();
+            c.close();
+        }
+
+    }
+
     public void wipeData(){
         String query[] = new String[] {"DELETE FROM " + DBContract.StorageEntry.TABLE_NAME,
                 "DELETE FROM " + DBContract.DepartmentEntry.TABLE_NAME,
@@ -191,6 +270,52 @@ public class DBHandler extends SQLiteOpenHelper {
         Cursor c = db.rawQuery(query, null);
 
         return c;
+    }
+
+    private JSONArray TableToJSONArray(String SqlQuery)
+    {
+
+        SQLiteDatabase db = getWritableDatabase();
+
+        String searchQuery = SqlQuery;
+        Cursor cursor = db.rawQuery(searchQuery, null );
+
+        JSONArray resultSet  = new JSONArray();
+
+        cursor.moveToFirst();
+        while (cursor.isAfterLast() == false) {
+
+            int totalColumn = cursor.getColumnCount();
+            JSONObject rowObject = new JSONObject();
+
+            for( int i=0 ;  i< totalColumn ; i++ )
+            {
+                if( cursor.getColumnName(i) != null )
+                {
+                    try
+                    {
+                        if( cursor.getString(i) != null )
+                        {
+                            Log.d("TAG_NAME", cursor.getString(i) );
+                            rowObject.put(cursor.getColumnName(i) ,  cursor.getString(i) );
+                        }
+                        else
+                        {
+                            rowObject.put( cursor.getColumnName(i) ,  "" );
+                        }
+                    }
+                    catch( Exception e )
+                    {
+                        Log.d("TAG_NAME", e.getMessage()  );
+                    }
+                }
+            }
+            resultSet.put(rowObject);
+            cursor.moveToNext();
+        }
+        cursor.close();
+        Log.d("TAG_NAME", resultSet.toString() );
+        return resultSet;
     }
 
 }

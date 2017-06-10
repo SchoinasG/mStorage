@@ -17,7 +17,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 public class ImportDepartments extends AppCompatActivity {
-    private static final String JSON_OBJECT_REQUEST_URL = "http://10.0.2.2:4567/deparments";
+    private static final String JSON_OBJECT_REQUEST_URL = "http://192.168.1.7:4567/deparments";
     ProgressDialog progressDialog;
     private static final String TAG = "Import Departments";
     int StorageId;
