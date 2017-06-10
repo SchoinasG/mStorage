@@ -57,7 +57,7 @@ public class ItemAudit extends AppCompatActivity {
 
         ItemsList = dbHandler.ItemPopulator(Selected_Department_ID);
 
-        ItemAdapterForInventory itemsAdapter = new ItemAdapterForInventory(ItemAudit.this, ItemsList);
+        ItemAdapterForAudit itemsAdapter = new ItemAdapterForAudit(ItemAudit.this, ItemsList);
         ItemsListView.setAdapter(itemsAdapter);
 
         ItemsListView.setOnItemClickListener( //Item listener for our listview
