@@ -68,14 +68,6 @@ public class ItemAudit extends AppCompatActivity {
                         Item ItemClicked = (Item) parent.getItemAtPosition(position); //get the department object that the user clicked on and store it in a local object of type Department to manipulate it as we want
 
                         i = new Intent(getApplicationContext(), ItemDetailsAudit.class); //Initiate intent object
-//                        i.putExtra("Item_Name", ItemClicked.getName());
-//                        i.putExtra("Item_Code", ItemClicked.getSKU());
-//                        i.putExtra("Item_Description", ItemClicked.getDescription());
-//                        i.putExtra("Items_Department_ID", ItemClicked.getItems_department_id());
-//                        i.putExtra("Item_Category", ItemClicked.getCategory());
-//                        i.putExtra("Item_Position", ItemClicked.getPosition());
-//                        i.putExtra("Item_Quantity", ItemClicked.getQuantity());
-//                        i.putExtra("Item_Mes_Unit", ItemClicked.getMeasurement_unit());
                         i.putExtra("ClickedItem",ItemClicked);
                         startActivityForResult(i,1); //Start the new activity
                     }
