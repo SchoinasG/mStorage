@@ -1,5 +1,7 @@
 package com.example.johnnie.mstorage.Audit;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
@@ -15,6 +17,8 @@ import com.example.johnnie.mstorage.DBHandler;
 import com.example.johnnie.mstorage.Item;
 import com.example.johnnie.mstorage.R;
 
+import org.w3c.dom.Text;
+
 /**
  * Created by Johnnie on 9/6/2017.
  */
@@ -22,14 +26,17 @@ import com.example.johnnie.mstorage.R;
 public class ItemDetailsAudit extends AppCompatActivity{
 
     private TextView ItemName, ItemCode, ItemDescription, ItemsDepartmentId, ItemCategory, ItemPosition, ItemQuantity, ItemMesUnit, ItemNotes, ItemDateM, ItemQuantityFound;
-    private Button DetailsButton, AddtoQuantity, SubFromQuantity;
+    private Button DetailsButton, AddtoQuantity, SubFromQuantity, SetNote;
     private EditText SetQuantity;
+    private String TextForItem;
     private int TempItemQuantity, InitialItemQuantity;
     private boolean detailsVisibility = true;
 
     private DBHandler dbHandler ;
 
     private Item ClickedItem;
+
+    private AlertDialog.Builder builder;
 
     private static final String TAG = ("/////--ItemDetailsAudit");
 
@@ -60,11 +67,12 @@ public class ItemDetailsAudit extends AppCompatActivity{
         ItemQuantityFound = (TextView) findViewById(R.id.itemQuantityFound);
         ItemDateM = (TextView) findViewById(R.id.itemDateModified);
 
-
         // Quantity setters
         SetQuantity = (EditText) findViewById(R.id.QuantitySetter);
         AddtoQuantity = (Button) findViewById(R.id.AddToQuantity);
         SubFromQuantity = (Button) findViewById(R.id.SubFromQuantity);
+        //Add NOte
+        SetNote = (Button) findViewById(R.id.AddNote);
 
 
 
@@ -105,6 +113,44 @@ public class ItemDetailsAudit extends AppCompatActivity{
             }
         });
 
+
+        SetNote.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG, "Add note");
+                builder = new AlertDialog.Builder(ItemDetailsAudit.this);
+                final EditText input = new EditText(ItemDetailsAudit.this);
+                builder.setView(input);
+                builder.setTitle("Add Note to Item");
+                builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        // ADD DIALOG TO ADD NOTE
+                        String InitialText = TextForItem;
+                        TextForItem = input.getText().toString();
+                        ClickedItem.setNotes(TextForItem);
+                        if(dbHandler.UpdateNoteOfItem(ClickedItem)){
+                            ItemNotes.setText(ClickedItem.getNotes());
+                            Toast.makeText(ItemDetailsAudit.this, "Updated succesfully", Toast.LENGTH_SHORT).show();
+                        }
+                        else{
+                            TextForItem = InitialText;
+                            ClickedItem.setNotes(InitialText);
+                            Toast.makeText(ItemDetailsAudit.this, "An Error occurred try again", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        // Canceled.
+                        dialog.cancel();
+                    }
+                });
+
+                builder.show();
+
+            }
+        });
+
         Log.d(TAG, "On Create");
     }
 
@@ -135,11 +181,12 @@ public class ItemDetailsAudit extends AppCompatActivity{
             SetQuantity.setText(String.valueOf(TempItemQuantity));
             ItemQuantityFound.setText(String.valueOf(ClickedItem.getQuantity_found()));
             InitialItemQuantity = TempItemQuantity;
+            Toast.makeText(ItemDetailsAudit.this, "Updated succesfully", Toast.LENGTH_SHORT).show();
         }
         else{
             TempItemQuantity = InitialItemQuantity;
             ClickedItem.setQuantity_found(InitialItemQuantity);
-            Toast.makeText(ItemDetailsAudit.this, "Na Error occurred try again", Toast.LENGTH_SHORT).show();
+            Toast.makeText(ItemDetailsAudit.this, "An Error occurred try again", Toast.LENGTH_SHORT).show();
         }
     }
 

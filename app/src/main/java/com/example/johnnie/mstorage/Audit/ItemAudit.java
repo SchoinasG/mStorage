@@ -69,7 +69,7 @@ public class ItemAudit extends AppCompatActivity {
 
                         i = new Intent(getApplicationContext(), ItemDetailsAudit.class); //Initiate intent object
                         i.putExtra("ClickedItem",ItemClicked);
-                        startActivityForResult(i,1); //Start the new activity
+                        startActivityForResult(i,0); //Start the new activity
                     }
                 }
         );

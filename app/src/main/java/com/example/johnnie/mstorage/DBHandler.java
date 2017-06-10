@@ -22,7 +22,7 @@ import java.util.Date;
 
 public class DBHandler extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION = 12;
+    private static final int DATABASE_VERSION = 13;
     private static final String DATABASE_NAME = "mStorage.db";
     private String TAG = "DbHelper";
 
@@ -82,11 +82,11 @@ public class DBHandler extends SQLiteOpenHelper {
 
         final String SQL_AUDIT_TABLE_TRIGGER =
                 "CREATE TRIGGER DATE_MODIFIED AFTER UPDATE ON " + DBContract.ItemAudit.TABLE_NAME +
-                " FOR EACH ROW WHEN NEW."+ DBContract.ItemAudit.COLUMN_ITEM_DATE_MODIFIED +" < OLD."+ DBContract.ItemAudit.COLUMN_ITEM_DATE_MODIFIED +
-                " BEGIN UPDATE " + DBContract.ItemAudit.TABLE_NAME + " SET "+ DBContract.ItemAudit.COLUMN_ITEM_DATE_MODIFIED +
+                " FOR EACH ROW BEGIN UPDATE " + DBContract.ItemAudit.TABLE_NAME + " SET "+ DBContract.ItemAudit.COLUMN_ITEM_DATE_MODIFIED +
                 " = CURRENT_TIMESTAMP WHERE "
-                +DBContract.ItemAudit.COLUMN_ITEM_ID + "=OLD." +DBContract.ItemAudit.COLUMN_ITEM_ID +
-                " AND "+DBContract.ItemAudit.COLUMN_ITEMS_DEPARTMENT_ID + "=OLD." +DBContract.ItemAudit.COLUMN_ITEMS_DEPARTMENT_ID +";"+
+                +DBContract.ItemAudit.COLUMN_ITEM_ID + "=OLD." + DBContract.ItemAudit.COLUMN_ITEM_ID +
+                " AND "+DBContract.ItemAudit.COLUMN_ITEMS_DEPARTMENT_ID + "=OLD." +DBContract.ItemAudit.COLUMN_ITEMS_DEPARTMENT_ID +
+                " AND "+ DBContract.ItemAudit.COLUMN_ITEM_POSITION + " LIKE OLD." + DBContract.ItemAudit.COLUMN_ITEM_POSITION + ";"+
                 " END";
 
         db.execSQL(SQL_CREATE_STORAGE_TABLE);
@@ -374,7 +374,8 @@ public class DBHandler extends SQLiteOpenHelper {
             ContentValues values = new ContentValues();
             values.put(DBContract.ItemAudit.COLUMN_ITEM_QUANTITY_FOUND, Updateitem.getQuantity_found());
             db.update(DBContract.ItemAudit.TABLE_NAME, values , DBContract.ItemAudit.COLUMN_ITEM_ID + "=" + Updateitem.getId() +
-                    " AND " + DBContract.ItemAudit.COLUMN_ITEMS_DEPARTMENT_ID + " = "+ Updateitem.getItems_department_id() , null);
+                    " AND " + DBContract.ItemAudit.COLUMN_ITEMS_DEPARTMENT_ID + " = "+ Updateitem.getItems_department_id() +
+                    " AND " + DBContract.ItemAudit.COLUMN_ITEM_POSITION + " Like \"" + Updateitem.getPosition() +"\"", null);
         }
         catch (final SQLException e)   {
             Log.d(TAG, e.toString());
@@ -385,5 +386,23 @@ public class DBHandler extends SQLiteOpenHelper {
             return true;
         }
     }
+    public boolean UpdateNoteOfItem(Item Updateitem){
+        SQLiteDatabase db = getWritableDatabase();
 
+        try {
+            ContentValues values = new ContentValues();
+            values.put(DBContract.ItemAudit.COLUMN_ITEM_NOTES, Updateitem.getNotes());
+            db.update(DBContract.ItemAudit.TABLE_NAME, values , DBContract.ItemAudit.COLUMN_ITEM_ID + "=" + Updateitem.getId() +
+                    " AND " + DBContract.ItemAudit.COLUMN_ITEMS_DEPARTMENT_ID + " = "+ Updateitem.getItems_department_id() +
+                    " AND " + DBContract.ItemAudit.COLUMN_ITEM_POSITION + " LIKE \"" + Updateitem.getPosition() + "\"", null);
+        }
+        catch (final SQLException e)   {
+            Log.d(TAG, e.toString());
+            return false;
+        }
+        finally{
+            db.close();
+            return true;
+        }
+    }
 }
