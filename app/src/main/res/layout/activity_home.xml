@@ -8,12 +8,7 @@
 
     <ImageButton
         android:id="@+id/ImportButton"
-        android:layout_width="130dp"
-        android:layout_height="130dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginTop="8dp"
+        style="@style/homeButton"
         android:contentDescription="@string/import_button"
         android:onClick="onClickImport"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -26,12 +21,7 @@
 
     <ImageButton
         android:id="@+id/ReportButton"
-        android:layout_width="130dp"
-        android:layout_height="130dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginTop="8dp"
+        style="@style/homeButton"
         android:contentDescription="@string/reports_button"
         android:onClick="onClickReport"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -44,11 +34,7 @@
 
     <ImageButton
         android:id="@+id/AuditButton"
-        android:layout_width="130dp"
-        android:layout_height="130dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
+        style="@style/homeButton"
         android:layout_marginTop="8dp"
         android:contentDescription="@string/audit_button"
         android:onClick="onClickAudit"
@@ -62,14 +48,9 @@
 
     <ImageButton
         android:id="@+id/ViewButton"
-        android:layout_width="130dp"
-        android:layout_height="130dp"
-        android:layout_marginBottom="8dp"
+        style="@style/homeButton"
         android:layout_marginEnd="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
         android:contentDescription="@string/view_button"
         android:onClick="onClickView"
         app:layout_constraintBottom_toBottomOf="parent"
