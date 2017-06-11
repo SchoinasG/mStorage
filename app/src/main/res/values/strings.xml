@@ -12,6 +12,16 @@
     <string name="import_department">IMPORT</string>
     <string name="qrscanner"></string>
     <string name="add_note">ADD Note</string>
-
+    <string name="item_name">Item Name:</string>
+    <string name="item_description">Item Description:</string>
+    <string name="item_category">Item Category:</string>
+    <string name="item_position">Item Position:</string>
+    <string name="item_sku">Item SKU:</string>
+    <string name="item_barcode">Item Barcode:</string>
+    <string name="item_quantity">Item Quantity:</string>
+    <string name="in_department">In Department:</string>
+    <string name="add_item">Add Item</string>
+    <string name="select">Select</string>
+    <string name="item_measurement">Item Measurement:</string>
 
 </resources>
