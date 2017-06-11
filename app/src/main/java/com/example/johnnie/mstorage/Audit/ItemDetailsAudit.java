@@ -86,9 +86,9 @@ public class ItemDetailsAudit extends AppCompatActivity{
         ItemMesUnit.setText(ClickedItem.getMeasurement_unit());
         SetQuantity.setText(Integer.toString(ClickedItem.getQuantity_found()));
         //Additional Audit collumns
-        ItemNotes.setText(ClickedItem.getNotes());
+        ItemNotes.setText("Note: " + ClickedItem.getNotes());
         ItemQuantityFound.setText(Integer.toString(ClickedItem.getQuantity_found()));
-        ItemDateM.setText(ClickedItem.getDate_modified());
+        ItemDateM.setText("Modified on: " + ClickedItem.getDate_modified());
 
         TempItemQuantity = ClickedItem.getQuantity_found();
         InitialItemQuantity = ClickedItem.getQuantity_found();
