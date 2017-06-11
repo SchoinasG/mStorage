@@ -98,9 +98,7 @@ public class ViewReports extends AppCompatActivity {
                         final Report ReportClicked = (Report) parent.getItemAtPosition(position); //get the Report object that the user clicked on and store it in a local object of type Department to manipulate it as we want
 
                         AlertDialog.Builder builder = new AlertDialog.Builder(ViewReports.this);
-                        final EditText input = new EditText(ViewReports.this);
-                        builder.setView(input);
-                        builder.setTitle("Upload ore Preview Report");
+                        builder.setTitle("Upload or Preview Report");
                         builder.setPositiveButton("Preview", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
                                 Intent i = new Intent(getApplicationContext(), ViewAReport.class); //Initiate intent object
