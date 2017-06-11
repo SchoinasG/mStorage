@@ -11,5 +11,7 @@
     <string name="wipe_data">Wipe Data</string>
     <string name="import_department">IMPORT</string>
     <string name="qrscanner"></string>
+    <string name="add_note">ADD Note</string>
+
 
 </resources>

@@ -153,8 +153,8 @@
 
         <Button
             android:id="@+id/SubFromQuantity"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/customButton"
+            android:background="@drawable/custom_button"
             android:text="-"
             android:layout_marginEnd="23dp"
             android:layout_alignBaseline="@+id/QuantitySetter"
@@ -163,8 +163,8 @@
 
         <Button
             android:id="@+id/AddToQuantity"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/customButton"
+            android:background="@drawable/custom_button"
             android:text="+"
             android:layout_marginStart="27dp"
             android:layout_centerVertical="true"
@@ -172,8 +172,8 @@
 
         <EditText
             android:id="@+id/QuantitySetter"
-            android:layout_width="56dp"
-            android:layout_height="41dp"
+            android:layout_width="60dp"
+            android:layout_height="55dp"
             android:ems="10"
             android:inputType="number"
             android:layout_centerVertical="true"
@@ -183,8 +183,10 @@
 
     <Button
         android:id="@+id/AddNote"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Add Note" />
+        style="@style/customButton"
+        android:background="@drawable/custom_button"
+        android:text="@string/add_note"
+        android:layout_marginTop="16dp"
+        />
 
 </LinearLayout>
