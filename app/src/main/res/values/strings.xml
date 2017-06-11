@@ -10,5 +10,7 @@
     <string name="select_all_checkbox">Select All</string>
     <string name="wipe_data">Wipe Data</string>
     <string name="import_department">IMPORT</string>
+    <string name="add_note">ADD Note</string>
+
 
 </resources>

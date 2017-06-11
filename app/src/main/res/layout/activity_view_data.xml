@@ -30,7 +30,7 @@
 
         <Button
             style="@style/customButton"
-            android:background="@drawable/custom_button"
+            android:background="@drawable/wipe_button"
             android:text="@string/wipe_data"
             android:onClick="wipeData"/>
 
