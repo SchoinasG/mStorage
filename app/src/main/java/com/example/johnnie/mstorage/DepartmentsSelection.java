@@ -35,7 +35,7 @@ public class DepartmentsSelection extends AppCompatActivity {
 
     private DBHandler dbHandler;
                                                         //Schoinas - 192.168.1.7 //Telis - 192.168.1.3
-    private static final String JSON_OBJECT_REQUEST_URL = "http://192.168.1.7:4567/departments/"; //Everyone change this ip address to the corresponding ip address of your emulator (ipconfig IPv4 address)
+    private static final String JSON_OBJECT_REQUEST_URL = "http://192.168.1.3:4567/departments/"; //Everyone change this ip address to the corresponding ip address of your emulator (ipconfig IPv4 address)
     ProgressDialog progressDialog;
 
     private static final String TAG = "DepartmensSelection";

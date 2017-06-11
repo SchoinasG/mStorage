@@ -478,5 +478,25 @@ public class DBHandler extends SQLiteOpenHelper {
         }
     }
 
+    public boolean AddItem(String name, String desc, String cat, String pos, String SKU, String mesUnit, int quantity, int inDep){
+        SQLiteDatabase db = getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(DBContract.ItemEntry.COLUMN_ITEM_ID, 44); //Manually added items get id 44
+        values.put(DBContract.ItemEntry.COLUMN_ITEM_NAME, name);
+        values.put(DBContract.ItemEntry.COLUMN_ITEM_DESCRIPTION, desc);
+        values.put(DBContract.ItemEntry.COLUMN_ITEM_CATEGORY, cat);
+        values.put(DBContract.ItemEntry.COLUMN_ITEM_POSITION, pos);
+        values.put(DBContract.ItemEntry.COLUMN_ITEM_SKU, SKU);
+        values.put(DBContract.ItemEntry.COLUMN_ITEM_QUANTITY, quantity);
+        values.put(DBContract.ItemEntry.COLUMN_ITEMS_DEPARTMENT_ID, inDep);
+        values.put(DBContract.ItemEntry.COLUMN_ITEM_MEASUREMENT, mesUnit);
+        values.put(DBContract.ItemEntry.COLUMN_ITEM_BARCODE, "");
+
+        db.insert(DBContract.ItemEntry.TABLE_NAME, null, values);
+        db.close();
+
+        return true;
+    }
 
 }

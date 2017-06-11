@@ -39,6 +39,8 @@
         <activity android:name=".ViewReports" />
         <activity android:name=".ViewAReport" />
         <activity android:name=".ViewReportItem"></activity>
+        <activity android:name=".Audit.ItemDetailsAudit" />
+        <activity android:name=".AddItem"></activity>
     </application>
 
 </manifest>

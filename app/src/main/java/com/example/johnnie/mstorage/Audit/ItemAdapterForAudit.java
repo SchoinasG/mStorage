@@ -76,7 +76,7 @@ public class ItemAdapterForAudit extends BaseAdapter {
                 gradientDrawable_forItemRow.setColor(Color.parseColor("#fd6721"));
             }
         } else if (quantity_found==quantity){
-            gradientDrawable_forItemRow.setColor(Color.parseColor("#00ff00"));
+            gradientDrawable_forItemRow.setColor(Color.parseColor("#00aa00"));
         }
 
         ItemName.setText("Item Name: " + item.getName()); //Setting the name
