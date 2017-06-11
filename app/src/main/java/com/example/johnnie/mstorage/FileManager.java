@@ -33,7 +33,7 @@ public class FileManager {
         SimpleDateFormat format = new SimpleDateFormat("dd-MM-yy-k-mm");
         String Date = format.format(curDate);
 
-        String sFileName = "Sid="+String.valueOf(department.getStorageid())+"-Did="+String.valueOf(department.getId())+"-Date="+Date+".txt";
+        String sFileName = "Sid="+String.valueOf(department.getStorageid())+"#Did="+String.valueOf(department.getId())+"#Date="+Date+"#.txt";
         if(Environment.MEDIA_MOUNTED.equals(storageState)) {
             try {
                 File sdCard = Environment.getExternalStorageDirectory();
@@ -48,7 +48,6 @@ public class FileManager {
                 }catch(Exception e){
                     e.printStackTrace();
                 }
-                Log.d("ROOTEDIN",""+root);
                 //ACCESS DENIED TO CREATE FILE IN EXTERNAL STORAGE
                 File gpxfile = new File(root, sFileName);
                 if (!gpxfile.exists()) {

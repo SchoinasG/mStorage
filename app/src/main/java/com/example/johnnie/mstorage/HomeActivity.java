@@ -35,7 +35,7 @@ public class HomeActivity extends AppCompatActivity {
         startActivity(intent);
     }
     public void onClickReport(View view){
-        Intent intent = new Intent(this, MakeReport.class);
+        Intent intent = new Intent(this, ViewReports.class);
         startActivity(intent);
     }
 

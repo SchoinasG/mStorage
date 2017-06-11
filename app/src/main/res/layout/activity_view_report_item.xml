@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center_horizontal"
+    android:paddingTop="10dp"
+    tools:context="com.example.johnnie.mstorage.ViewReportItem"
+    android:weightSum="1">
+
+    <TextView
+        android:text="Item name"
+        android:textSize="18dp"
+        android:textStyle="bold"
+        android:textColor="#124064"
+        android:layout_marginBottom="7dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/itemName"/>
+
+    <TextView
+        android:text="Item code"
+        android:textSize="18dp"
+        android:textStyle="bold"
+        android:textColor="#124064"
+        android:layout_marginBottom="14dp"
+        android:gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/itemCode"/>
+
+    <Button
+        android:text="DETAILS    ▲"
+        android:textSize="16dp"
+        android:textColor="#ffffff"
+        android:background="@drawable/custom_button"
+        android:paddingLeft="20dp"
+        android:paddingRight="17dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="14dp"
+        android:id="@+id/detailsButton"
+        android:onClick="viewDetails"/>
+
+    <TextView
+        android:text="Item Desc"
+        android:textSize="14dp"
+        android:textColor="#3c4c51"
+        android:layout_marginBottom="7dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/itemDescription"/>
+
+    <TextView
+        android:text="Item Dep ID"
+        android:textSize="16dp"
+        android:textColor="#0481ad"
+        android:layout_marginBottom="7dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/itemsDepartmentId"/>
+
+    <TextView
+        android:text="Item Category"
+        android:textSize="16dp"
+        android:textColor="#0481ad"
+        android:layout_marginBottom="7dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/itemCategory"/>
+
+    <TextView
+        android:text="Item Position"
+        android:textSize="16dp"
+        android:textColor="#0481ad"
+        android:layout_marginBottom="7dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/itemPosition"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:text="0"
+            android:textSize="22dp"
+            android:textColor="#0481ad"
+            android:textStyle="bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="7dp"
+            android:id="@+id/itemQuantityFound"/>
+        <TextView
+            android:text="/"
+            android:textSize="22dp"
+            android:textColor="#0481ad"
+            android:textStyle="bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="7dp"
+            android:id="@+id/Separator"/>
+
+        <TextView
+            android:text="1"
+            android:textSize="22dp"
+            android:textColor="#0481ad"
+            android:textStyle="bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="7dp"
+            android:id="@+id/itemQuantity"/>
+
+        <TextView
+            android:text="Unit"
+            android:textSize="16dp"
+            android:textColor="#0481ad"
+            android:textStyle="bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/itemMesUnit"/>
+
+    </LinearLayout>
+    <TextView
+        android:text="Item Date Modified"
+        android:textSize="16dp"
+        android:textColor="#0481ad"
+        android:layout_marginBottom="7dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/itemDateModified"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_marginTop="20dp"
+        android:background="#124064"/>
+
+    <TextView
+        android:text="Note"
+        android:textSize="16dp"
+        android:textColor="#0481ad"
+        android:layout_marginBottom="7dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/itemNote"/>
+
+
+</LinearLayout>

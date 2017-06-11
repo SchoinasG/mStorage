@@ -77,4 +77,38 @@ public class JasonParser {
         return  ItemsList;
     }
 
+    public static ArrayList<Item> parseReportItems(JSONArray jsonresponse) throws JSONException{
+        ArrayList<Item> ItemsList = new ArrayList<>();
+        JSONArray Items = jsonresponse;
+        for (int i=0; i < Items.length(); i++){
+            JSONObject tempitem = Items.getJSONObject(i);
+            int Item_ID = tempitem.getInt("item_id");
+            String Item_Name = tempitem.getString("item_name");
+            String Item_Desc = tempitem.getString("item_desc");
+            String Item_SKU = tempitem.getString("item_sku");
+            String Item_Barcode = tempitem.getString("item_barcode");
+            String Item_Category = tempitem.getString("item_category");
+            String Item_Position = tempitem.getString("item_position");
+            String Item_Measurement_Unit = tempitem.getString("item_measurement_unit");
+            int Item_Quantity = tempitem.getInt("item_quantity");
+            int Item_department_id = tempitem.getInt("item_department_id");
+            int Item_checked = tempitem.getInt("item_checked");
+            int Item_quantity_found = tempitem.getInt("item_quantity_found");
+            String Item_notes = tempitem.getString("item_notes");
+            String Item_date = tempitem.getString("date_modified");
+
+            Item TItem = new Item(Item_ID, Item_Name, Item_Desc, Item_Category,
+                    Item_Position, Item_Measurement_Unit, Item_SKU, Item_Barcode,
+                    Item_Quantity, Item_department_id );
+            TItem.setIs_checked(Item_checked);
+            TItem.setNotes(Item_notes);
+            TItem.setQuantity_found(Item_quantity_found);
+            TItem.setDate_modified(Item_date);
+
+            ItemsList.add(TItem);
+        }
+
+        return  ItemsList;
+    }
+
 }
