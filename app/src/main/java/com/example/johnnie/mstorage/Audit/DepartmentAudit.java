@@ -126,8 +126,9 @@ public class DepartmentAudit extends AppCompatActivity {
                                 // User cancelled the dialog
                                 Log.d(TAG,"RESUMING PREVIOUS AUDIT");
                                 i = new Intent(getApplicationContext(), ItemAudit.class); //Initiate intent object
-                                i.putExtra("Department_ID", DepartmentClicked.getId());
-                                startActivity(i); //Start the new activity
+
+                                i.putExtra("ClickedDepartment",DepartmentClicked);
+                                startActivityForResult(i,0);
                             }
                         });
 

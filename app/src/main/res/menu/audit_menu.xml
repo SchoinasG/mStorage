@@ -5,5 +5,9 @@
         android:title="@string/add_item"
         android:id="@+id/addItem"
         android:orderInCategory="1"/>
+    <item
+        android:title="@string/complete_audit"
+        android:id="@+id/completeaudit"
+        android:orderInCategory="1"/>
 
 </menu>

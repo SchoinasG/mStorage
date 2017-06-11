@@ -21,6 +21,8 @@ import android.widget.Toast;
 import com.example.johnnie.mstorage.AddItem;
 import com.example.johnnie.mstorage.DBContract;
 import com.example.johnnie.mstorage.DBHandler;
+import com.example.johnnie.mstorage.Department;
+import com.example.johnnie.mstorage.FileManager;
 import com.example.johnnie.mstorage.Item;
 import com.example.johnnie.mstorage.ItemAdapterForInventory;
 import com.example.johnnie.mstorage.R;
@@ -43,6 +45,7 @@ public class ItemAudit extends AppCompatActivity implements ZXingScannerView.Res
     private boolean inCamera;
     private ZXingScannerView Qrview;
     private static final String TAG = ("/////--ItemAudit");
+    private Department ClickedDepartment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,8 +61,9 @@ public class ItemAudit extends AppCompatActivity implements ZXingScannerView.Res
         QrScanner = (ImageButton) findViewById(R.id.ScanQrCode);
 
         //Get Departments data from extra
-        Bundle getTheDepartmentID = getIntent().getExtras();
-        Selected_Department_ID = getTheDepartmentID.getInt("Department_ID");
+        Intent i = getIntent();
+        ClickedDepartment = (Department) i.getSerializableExtra("ClickedDepartment");
+
 
         dbHandler = new DBHandler(ItemAudit.this);
 
@@ -72,7 +76,7 @@ public class ItemAudit extends AppCompatActivity implements ZXingScannerView.Res
         ArrayList<Item> ItemsList = new ArrayList<>();
         ItemsList.clear();
 
-        ItemsList = dbHandler.ItemPopulator(Selected_Department_ID);
+        ItemsList = dbHandler.ItemPopulator(ClickedDepartment.getId());
 
         ItemAdapterForAudit itemsAdapter = new ItemAdapterForAudit(ItemAudit.this, ItemsList);
         ItemsListView.setAdapter(itemsAdapter);
@@ -135,7 +139,7 @@ public class ItemAudit extends AppCompatActivity implements ZXingScannerView.Res
     @Override
     public void handleResult(Result result) {
         String ScannedQrCode = result.getText();
-        ArrayList<Item> ScannedItems = dbHandler.getItemsfromQr(ScannedQrCode , Selected_Department_ID);
+        ArrayList<Item> ScannedItems = dbHandler.getItemsfromQr(ScannedQrCode , ClickedDepartment.getId());
         Toast.makeText(this, "Qr Scanned", Toast.LENGTH_SHORT).show();
         if (ScannedItems.size() > 0){
 
@@ -187,8 +191,25 @@ public class ItemAudit extends AppCompatActivity implements ZXingScannerView.Res
                 i = new Intent(this, AddItem.class);
                 startActivity(i);
                 return true;
+            case R.id.completeaudit:
+//GIVE DEPARTMENT
+                CompleteAudit();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
+        }
+    }
+
+    public void CompleteAudit(){
+        FileManager FinishAudit = new FileManager();
+        boolean what = FinishAudit.writeFileonSd(this,ClickedDepartment,dbHandler.TableToJSONArray(ClickedDepartment));
+        if(what){
+            if(dbHandler.DeleteDepartmentFromAudit(ClickedDepartment)){
+                Toast.makeText(this, "Department saved in file and removed from Audit", Toast.LENGTH_SHORT).show();
+            }else{
+                Toast.makeText(this, "An Error has occured", Toast.LENGTH_SHORT).show();
+
+            }
         }
     }
 }

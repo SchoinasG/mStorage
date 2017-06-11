@@ -111,7 +111,8 @@ public class JasonParser {
         return Departments; //After the loop has finished, return the ObjectArray which is named StoragesArray
     }
 
-}
+
+
     public static ArrayList<Item> parseReportItems(JSONArray jsonresponse) throws JSONException{
         ArrayList<Item> ItemsList = new ArrayList<>();
         JSONArray Items = jsonresponse;

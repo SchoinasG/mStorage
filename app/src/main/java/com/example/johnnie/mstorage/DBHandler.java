@@ -499,4 +499,37 @@ public class DBHandler extends SQLiteOpenHelper {
         return true;
     }
 
+
+    public boolean DeleteDepartmentFromAudit(Department DeleteDep){
+        SQLiteDatabase db = getWritableDatabase();
+
+        if(DepartmentExists(DeleteDep)){
+            String SQL_DELETE_ITEMS_FROM_AUDIT = "DELETE FROM " + DBContract.ItemAudit.TABLE_NAME +
+                    " WHERE "+ DBContract.ItemEntry.COLUMN_ITEMS_DEPARTMENT_ID +" = " + DeleteDep.getId() + ";";
+
+            String SQL_COPY_ITEMS_TO_AUDIT = "INSERT INTO " + DBContract.ItemAudit.TABLE_NAME +
+                    "( "+ DBContract.ItemAudit.COLUMN_ITEM_ID +", "+ DBContract.ItemAudit.COLUMN_ITEM_NAME +
+                    ", "+ DBContract.ItemAudit.COLUMN_ITEM_DESCRIPTION +", "+ DBContract.ItemAudit.COLUMN_ITEM_CATEGORY +
+                    ", "+ DBContract.ItemAudit.COLUMN_ITEM_MEASUREMENT +", "+ DBContract.ItemAudit.COLUMN_ITEM_POSITION +
+                    ", "+ DBContract.ItemAudit.COLUMN_ITEM_QUANTITY + ", "+ DBContract.ItemAudit.COLUMN_ITEM_BARCODE +
+                    ", "+ DBContract.ItemAudit.COLUMN_ITEM_SKU + ", "+ DBContract.ItemAudit.COLUMN_ITEMS_DEPARTMENT_ID +
+                    " ) SELECT * FROM " + DBContract.ItemEntry.TABLE_NAME +
+                    " WHERE "+ DBContract.ItemEntry.COLUMN_ITEMS_DEPARTMENT_ID +" = " + DeleteDep.getId() + ";";
+
+
+            try {
+                db.execSQL(SQL_DELETE_ITEMS_FROM_AUDIT);
+                db.execSQL(SQL_COPY_ITEMS_TO_AUDIT);
+            }
+            catch (final SQLException e)   {
+                Log.d(TAG, e.toString());
+            }
+            finally{
+                db.close();
+                return true;
+            }
+        }
+        return false;
+    }
+
 }
