@@ -7,6 +7,7 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -216,29 +217,34 @@ public class DBHandler extends SQLiteOpenHelper {
 
         String query = "SELECT * FROM "+  DBContract.ItemAudit.TABLE_NAME +
                 " WHERE " + DBContract.ItemAudit.COLUMN_ITEMS_DEPARTMENT_ID + " = " + department.getId() + ";";
+
+        String SQL_COPY_ITEMS_TO_AUDIT = "INSERT INTO " + DBContract.ItemAudit.TABLE_NAME +
+                "( "+ DBContract.ItemAudit.COLUMN_ITEM_ID +", "+ DBContract.ItemAudit.COLUMN_ITEM_NAME +
+                ", "+ DBContract.ItemAudit.COLUMN_ITEM_DESCRIPTION +", "+ DBContract.ItemAudit.COLUMN_ITEM_CATEGORY +
+                ", "+ DBContract.ItemAudit.COLUMN_ITEM_MEASUREMENT +", "+ DBContract.ItemAudit.COLUMN_ITEM_POSITION +
+                ", "+ DBContract.ItemAudit.COLUMN_ITEM_QUANTITY + ", "+ DBContract.ItemAudit.COLUMN_ITEM_BARCODE +
+                ", "+ DBContract.ItemAudit.COLUMN_ITEM_SKU + ", "+ DBContract.ItemAudit.COLUMN_ITEMS_DEPARTMENT_ID +
+                " ) SELECT * FROM " + DBContract.ItemEntry.TABLE_NAME +
+                " WHERE "+ DBContract.ItemEntry.COLUMN_ITEMS_DEPARTMENT_ID +" = " + department.getId() + ";";
+
+        String SQL_DELETE_ITEMS_FROM_AUDIT = "DELETE FROM " + DBContract.ItemAudit.TABLE_NAME +
+                " WHERE "+ DBContract.ItemEntry.COLUMN_ITEMS_DEPARTMENT_ID +" = " + department.getId() + ";";
+
         Cursor c = db.rawQuery(query, null);
         try {
             if (c.getCount() <= 0)
             {
                 Log.d(TAG,"NOT FOUND ANY DATA IN TABLE");
-                String SQL_COPY_ITEMS_TO_AUDIT = "INSERT INTO " + DBContract.ItemAudit.TABLE_NAME +
-                        "( "+ DBContract.ItemAudit.COLUMN_ITEM_ID +", "+ DBContract.ItemAudit.COLUMN_ITEM_NAME +
-                        ", "+ DBContract.ItemAudit.COLUMN_ITEM_DESCRIPTION +", "+ DBContract.ItemAudit.COLUMN_ITEM_CATEGORY +
-                        ", "+ DBContract.ItemAudit.COLUMN_ITEM_MEASUREMENT +", "+ DBContract.ItemAudit.COLUMN_ITEM_POSITION +
-                        ", "+ DBContract.ItemAudit.COLUMN_ITEM_QUANTITY + ", "+ DBContract.ItemAudit.COLUMN_ITEM_BARCODE +
-                        ", "+ DBContract.ItemAudit.COLUMN_ITEM_SKU + ", "+ DBContract.ItemAudit.COLUMN_ITEMS_DEPARTMENT_ID +
-                        " ) SELECT * FROM " + DBContract.ItemEntry.TABLE_NAME +
-                        " WHERE "+ DBContract.ItemEntry.COLUMN_ITEMS_DEPARTMENT_ID +" = " + department.getId() + ";";
                 db = getWritableDatabase();
                 db.execSQL(SQL_COPY_ITEMS_TO_AUDIT);
             } else
             {
                 Log.d(TAG,"FOUND DATA IN TABLE");
-                Date curDate = new Date();
-                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-                String DateToStr = format.format(curDate);
-                FileManager FileSaver = new FileManager();
-                FileSaver.writeFileonSd(this.context, department.getStorageid(), department.getId(), department.getName(), DateToStr, TableToJSONArray(query));
+
+                db = getWritableDatabase();
+                db.execSQL(SQL_DELETE_ITEMS_FROM_AUDIT);
+                db.execSQL(SQL_COPY_ITEMS_TO_AUDIT);
+
             }
         }
         catch (final SQLException e)   {
@@ -277,13 +283,15 @@ public class DBHandler extends SQLiteOpenHelper {
         return c;
     }
 
-    private JSONArray TableToJSONArray(String SqlQuery)
+    public JSONArray TableToJSONArray(Department department)
     {
 
         SQLiteDatabase db = getWritableDatabase();
 
-        String searchQuery = SqlQuery;
-        Cursor cursor = db.rawQuery(searchQuery, null );
+        String query = "SELECT * FROM "+  DBContract.ItemAudit.TABLE_NAME +
+                " WHERE " + DBContract.ItemAudit.COLUMN_ITEMS_DEPARTMENT_ID + " = " + department.getId() + ";";
+
+        Cursor cursor = db.rawQuery(query, null );
 
         JSONArray resultSet  = new JSONArray();
 
@@ -450,5 +458,25 @@ public class DBHandler extends SQLiteOpenHelper {
 
         return  FoundItems;
     }
+
+    public boolean DepartmentExists(Department department){
+        Log.d(TAG," DepartmentExists");
+        SQLiteDatabase db = getWritableDatabase();
+
+        String query = "SELECT * FROM "+  DBContract.ItemAudit.TABLE_NAME +
+                " WHERE " + DBContract.ItemAudit.COLUMN_ITEMS_DEPARTMENT_ID + " = " + department.getId() + ";";
+
+        Cursor c = db.rawQuery(query, null);
+        if (c.getCount() <= 0)
+        {
+            c.close();
+            return false;
+        } else
+        {
+            close();
+            return true;
+        }
+    }
+
 
 }

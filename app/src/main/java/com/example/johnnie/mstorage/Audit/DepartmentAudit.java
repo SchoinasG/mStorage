@@ -22,10 +22,13 @@ import com.example.johnnie.mstorage.DBContract;
 import com.example.johnnie.mstorage.DBHandler;
 import com.example.johnnie.mstorage.Department;
 import com.example.johnnie.mstorage.DepartmentAdapterForInventory;
+import com.example.johnnie.mstorage.FileManager;
 import com.example.johnnie.mstorage.ItemsInventory;
 import com.example.johnnie.mstorage.R;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class DepartmentAudit extends AppCompatActivity {
     private ListView DepartmentsListView;
@@ -102,6 +105,11 @@ public class DepartmentAudit extends AppCompatActivity {
                         builder.setPositiveButton("NEW", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 // User clicked OK button
+                                if(dbHandler.DepartmentExists(DepartmentClicked)) {
+                                    //Call Filemanager to Save Data before Delete
+                                    FileManager FileSaver = new FileManager();
+                                    FileSaver.writeFileonSd(DepartmentAudit.this, DepartmentClicked, dbHandler.TableToJSONArray(DepartmentClicked));
+                                }
                                 if(dbHandler.CopyToAudit(DepartmentClicked)){
                                     i = new Intent(getApplicationContext(), ItemAudit.class); //Initiate intent object
                                     i.putExtra("Department_ID", DepartmentClicked.getId());

@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageButton;
@@ -36,7 +37,7 @@ public class ItemAudit extends AppCompatActivity implements ZXingScannerView.Res
     private DBHandler dbHandler;
     private int Selected_Department_ID;
     private Intent i;
-
+    private boolean inCamera;
     private ZXingScannerView Qrview;
     private static final String TAG = ("/////--ItemAudit");
 
@@ -60,6 +61,8 @@ public class ItemAudit extends AppCompatActivity implements ZXingScannerView.Res
         dbHandler = new DBHandler(ItemAudit.this);
 
         populateStoragesListView();
+
+        inCamera = false;
     }
 
     public void populateStoragesListView(){
@@ -97,6 +100,7 @@ public class ItemAudit extends AppCompatActivity implements ZXingScannerView.Res
         setContentView(Qrview);
         Qrview.setResultHandler(this);
         Qrview.startCamera();
+        inCamera = true;
     }
 
     @Override
@@ -108,6 +112,22 @@ public class ItemAudit extends AppCompatActivity implements ZXingScannerView.Res
         catch (RuntimeException exception){
         }
     }
+
+//    @Override
+//    public boolean onKeyDown(int keyCode, KeyEvent event)  {
+//        if (Integer.parseInt(android.os.Build.VERSION.SDK) > 5
+//                && keyCode == KeyEvent.KEYCODE_BACK
+//                && event.getRepeatCount() == 0 && inCamera) {
+//            Log.d("CDATA", "onKeyDown Called");
+//            Qrview.stopCamera();
+//            setContentView(R.layout.activity_items_audit);
+//            populateStoragesListView();
+//            inCamera = false;
+//            return true;
+//        }
+//        return super.onKeyDown(keyCode, event);
+//    }
+
 
     @Override
     public void handleResult(Result result) {
