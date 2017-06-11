@@ -405,4 +405,50 @@ public class DBHandler extends SQLiteOpenHelper {
             return true;
         }
     }
+
+    public ArrayList<Item> getItemsfromQr(String QrCode, int Departmens_id){
+        ArrayList FoundItems = new ArrayList<>();
+        SQLiteDatabase db = getWritableDatabase();
+
+        String query = "SELECT * FROM " + DBContract.ItemAudit.TABLE_NAME + " WHERE " + DBContract.ItemAudit.COLUMN_ITEM_SKU + "= \"" + QrCode + "\" AND "
+                + DBContract.ItemAudit.COLUMN_ITEMS_DEPARTMENT_ID +" = " + Departmens_id;
+
+        Cursor c = db.rawQuery(query, null);
+
+        if(c != null && c.getCount() != 0){
+            if(c.moveToFirst()){
+                do{
+                    int itemId = c.getInt(c.getColumnIndex(DBContract.ItemAudit.COLUMN_ITEM_ID));
+                    String itemName = c.getString(c.getColumnIndex(DBContract.ItemAudit.COLUMN_ITEM_NAME));
+                    String itemDesc = c.getString(c.getColumnIndex(DBContract.ItemAudit.COLUMN_ITEM_DESCRIPTION));
+                    String itemCategory = c.getString(c.getColumnIndex(DBContract.ItemAudit.COLUMN_ITEM_CATEGORY));
+                    String itemPosition = c.getString(c.getColumnIndex(DBContract.ItemAudit.COLUMN_ITEM_POSITION));
+                    String itemMesUnit = c.getString(c.getColumnIndex(DBContract.ItemAudit.COLUMN_ITEM_MEASUREMENT));
+                    String itemSKU = c.getString(c.getColumnIndex(DBContract.ItemAudit.COLUMN_ITEM_SKU));
+                    String itemBarcode = c.getString(c.getColumnIndex(DBContract.ItemAudit.COLUMN_ITEM_BARCODE));
+                    int itemQuantity = c.getInt(c.getColumnIndex(DBContract.ItemAudit.COLUMN_ITEM_QUANTITY));
+                    int departmentID = c.getInt(c.getColumnIndex(DBContract.ItemAudit.COLUMN_ITEMS_DEPARTMENT_ID));
+                    int itemQuantityFound = c.getInt(c.getColumnIndex(DBContract.ItemAudit.COLUMN_ITEM_QUANTITY_FOUND));
+                    String itemsNotes = c.getString(c.getColumnIndex(DBContract.ItemAudit.COLUMN_ITEM_NOTES));
+                    String itemsDateModified = c.getString(c.getColumnIndex(DBContract.ItemAudit.COLUMN_ITEM_DATE_MODIFIED));
+                    int itemCheckedStatus = c.getInt(c.getColumnIndex(DBContract.ItemAudit.COLUMN_ITEM_IS_CHECKED));
+
+                    Item ScannedItem = new Item(itemId, itemName, itemDesc, itemCategory, itemPosition, itemMesUnit, itemSKU, itemBarcode, itemQuantity, departmentID);
+
+                    ScannedItem.setQuantity_found(itemQuantityFound);
+                    ScannedItem.setNotes(itemsNotes);
+                    ScannedItem.setDate_modified(itemsDateModified);
+                    ScannedItem.setIs_checked(itemCheckedStatus);
+
+                    FoundItems.add(ScannedItem);
+
+                }while(c.moveToNext());
+            }
+        }
+
+        c.close();
+
+        return  FoundItems;
+    }
+
 }
