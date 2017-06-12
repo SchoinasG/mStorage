@@ -40,12 +40,12 @@ public class ItemAudit extends AppCompatActivity implements ZXingScannerView.Res
     private ListView ItemsListView;
     private ImageButton QrScanner;
     private DBHandler dbHandler;
-    private int Selected_Department_ID;
+    private static int Selected_Department_ID;
     private Intent i;
     private boolean inCamera;
     private ZXingScannerView Qrview;
     private static final String TAG = ("/////--ItemAudit");
-    private Department ClickedDepartment;
+    private static Department ClickedDepartment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,8 +62,10 @@ public class ItemAudit extends AppCompatActivity implements ZXingScannerView.Res
 
         //Get Departments data from extra
         Intent i = getIntent();
-        ClickedDepartment = (Department) i.getSerializableExtra("ClickedDepartment");
-
+        if(i.hasExtra("ClickedDepartment")) {
+            ClickedDepartment = (Department) i.getSerializableExtra("ClickedDepartment");
+            Selected_Department_ID = ClickedDepartment.getId();
+        }
 
         dbHandler = new DBHandler(ItemAudit.this);
 
@@ -76,7 +78,7 @@ public class ItemAudit extends AppCompatActivity implements ZXingScannerView.Res
         ArrayList<Item> ItemsList = new ArrayList<>();
         ItemsList.clear();
 
-        ItemsList = dbHandler.ItemPopulator(ClickedDepartment.getId());
+        ItemsList = dbHandler.ItemPopulator(Selected_Department_ID);
 
         ItemAdapterForAudit itemsAdapter = new ItemAdapterForAudit(ItemAudit.this, ItemsList);
         ItemsListView.setAdapter(itemsAdapter);
@@ -139,7 +141,7 @@ public class ItemAudit extends AppCompatActivity implements ZXingScannerView.Res
     @Override
     public void handleResult(Result result) {
         String ScannedQrCode = result.getText();
-        ArrayList<Item> ScannedItems = dbHandler.getItemsfromQr(ScannedQrCode , ClickedDepartment.getId());
+        ArrayList<Item> ScannedItems = dbHandler.getItemsfromQr(ScannedQrCode , Selected_Department_ID);
         Toast.makeText(this, "Qr Scanned", Toast.LENGTH_SHORT).show();
         if (ScannedItems.size() > 0){
 
