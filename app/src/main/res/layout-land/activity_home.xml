@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    tools:context="com.example.johnnie.mstorage.HomeActivity">
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center">
+
+        <ImageButton
+            android:layout_width="118dp"
+            android:layout_height="118dp"
+            android:id="@+id/ImportButton"
+            style="@style/homeButton"
+            android:contentDescription="@string/import_button"
+            android:onClick="onClickImport"
+            app:srcCompat="@drawable/impdt" />
+
+        <ImageButton
+            android:layout_width="118dp"
+            android:layout_height="118dp"
+            android:id="@+id/ReportButton"
+            style="@style/homeButton"
+            android:contentDescription="@string/reports_button"
+            android:onClick="onClickReport"
+            app:srcCompat="@drawable/reports" />
+
+        <ImageButton
+            android:layout_width="118dp"
+            android:layout_height="118dp"
+            android:id="@+id/AuditButton"
+            style="@style/homeButton"
+            android:contentDescription="@string/audit_button"
+            android:onClick="onClickAudit"
+            app:srcCompat="@drawable/audit" />
+
+        <ImageButton
+            android:layout_width="118dp"
+            android:layout_height="118dp"
+            android:id="@+id/ViewButton"
+            style="@style/homeButton"
+            android:contentDescription="@string/view_button"
+            android:onClick="onClickView"
+            app:srcCompat="@drawable/view" />
+
+    </TableRow>
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center">
+
+        <TextView
+            style="@style/homeText"
+            android:id="@+id/ImportText"
+            android:text="@string/import_button" />
+
+        <TextView
+            style="@style/homeText"
+            android:id="@+id/ViewText"
+            android:text="@string/view_button" />
+
+        <TextView
+            style="@style/homeText"
+            android:id="@+id/AuditText"
+            android:text="@string/audit_button" />
+
+        <TextView
+            style="@style/homeText"
+            android:id="@+id/ReportsText"
+            android:text="@string/reports_button" />
+
+    </TableRow>
+
+</LinearLayout>
